@@ -8,4 +8,4 @@
 
 [komentorivi.txt](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/laskarit/viikko1/komentorivi.txt)
 
-
+### Viikko 2

@@ -1,0 +1,120 @@
+    poista ja nimeä uudelleen tiedostoja
+    
+    hassusti pitäis kyllä olla niin että file2 --> file22
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit a92e4286572c927a0db98d6a79017e1e6e2913b1
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:51:57 2022 +0200
+
+    create directory tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 352fbd292adc0d3c5a4f4a2dcd957d8c5f28c1ee
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:48:58 2022 +0200
+
+    modify eka.txt and kolmas.txt
+
+ eka.txt    | 2 +-
+ kolmas.txt | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+commit b506e8d92e4e2a3b2e7889b809c79f0352250807
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:46:47 2022 +0200
+
+    rename tiedosto.txt to eka.txt
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 68947525de51372df3cf4a7140d2e057c962adfc
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:45:27 2022 +0200
+
+    delete toinen.txt
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit a8949206148c6c45efad57bc9960a7970304798d
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:42:50 2022 +0200
+
+    muokkaa lisää
+
+ tiedosto.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit d0eb684443400951f6854d5900a2dd3acfbb2cc9
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:42:21 2022 +0200
+
+    muokkaa tiedosto.txt
+
+ tiedosto.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit f2117bf7c9879fc0f9a6defd0f85404d722738c5
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:41:00 2022 +0200
+
+    lisää tekstiä tiedosto.txt
+
+ tiedosto.txt | 141 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 140 insertions(+), 1 deletion(-)
+
+commit 5612ac1eb8868a826b38d1a7d8b9182616bf2408
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:36:23 2022 +0200
+
+    create directory stuff on file jee.txt
+
+ stuff/jee.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit e370cc02813940f9b19404bdea3f70c0217c6d18
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:35:30 2022 +0200
+
+    muokkaa toinen.txt ja kolmas.txt
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 1fbc28a0975baa9f6c345deb4c1e4720671ebdb3
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:34:15 2022 +0200
+
+    Luo kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f93c12059e7f6bc983f6d1bbe7a535e4da10d355
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:32:42 2022 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 1ce8b9a77bbd0ef66121fb35902ddd3203475b11
+Author: Olivia Horjamo <olivia.horjamo@gmail.com>
+Date:   Mon Mar 14 10:31:16 2022 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)

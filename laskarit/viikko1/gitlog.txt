@@ -1,4 +1,6 @@
-    poista ja nimeä uudelleen tiedostoja
+Tämän rivin tarkoitus on luoda merge konflikti.
+
+poista ja nimeä uudelleen tiedostoja
     
     hassusti pitäis kyllä olla niin että file2 --> file22
 

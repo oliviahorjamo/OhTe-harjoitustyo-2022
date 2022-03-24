@@ -18,5 +18,5 @@ Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus.
 
 ### Viikko 2
 
-
+[coveragereport.html](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/laskarit/viikko2/unicafe/coverage_report_html.png)
 

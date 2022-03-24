@@ -20,3 +20,9 @@ tähän mennessä luomansa ratkaisun oikeellisuuden, jolloin järjestelmä herja
 Järjestelmä ei herjaa väärässä paikassa olevia numeroita, jotka eivät ole sääntöjen vastaisia.
 - Kirjautunut käyttäjä voi tallentaa keskeneräisen ratkaisunsa.
 - Käyttäjä voi kirjautua ulos.
+
+## Jatkokehitysideoita
+
+- Käyttäjä voi antaa ratkaisemalleen sudokulle arvion vaikeudesta ja kirjallisen arvostelun. Arviot ovat näkyvillä muille käyttäjille.
+- Käyttäjä voi poistaa tunnuksensa, jolloin kaikki hänen keskeneräiset ratkaisunsa poistetaan. Arvostelujen kohdalle merkitään tieto, että
+- käyttäjätunnus on poistettu.

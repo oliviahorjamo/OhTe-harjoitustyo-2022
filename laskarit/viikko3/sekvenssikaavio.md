@@ -13,5 +13,7 @@ sequenceDiagram
   engine->>tank: consume(5)
   machine->>engine: is_running()
   engine->>tank: fuel.contents()
-  
+  tank->>engine: True
+  machine->>engine: use_energy()
+  engine->>tank: consume(10)
 ```

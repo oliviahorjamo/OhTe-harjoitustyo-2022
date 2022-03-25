@@ -17,15 +17,15 @@ Tehtävä 1: Monopoli -pelin luokkakaavio
       Pelinappula "0...8" -- "1" Aloitusruutu
       Monopoli "1" -- "1" Aloitusruutu
       Monopoli "1" -- "1" Vankila
-      Pelinappula "0...8" -- "*" Sattuma ja yhteismaa
-      Pelinappula "0..8" -- "*" "Asemat ja laitokset"
-      Pelinappula "0...8" -- "*" Normaalit kadut
-      "Normaalit kadut" "*" -- "1" Pelaaja
-      Talo "1...4" -- "1" "Normaalit kadut"
-      Hotelli "0...1" -- "1" "Normaalit kadut"
+      Pelinappula "0...8" -- "*" SattumaJaYhteismaa
+      Pelinappula "0..8" -- "*" AsematJaLaitokset
+      Pelinappula "0...8" -- "*" NormaalitKadut
+      NormaalitKadut "*" -- "1" Pelaaja
+      Talo "1...4" -- "1" NormaalitKadut
+      Hotelli "0...1" -- "1" NormaalitKadut
       Pelilauta "1" -- "40" Ruutu
       Raha "*" -- "1" Pelaaja
-      Toimintakortti "*" -- "1" "Sattuma ja yhteismaa"
+      Toimintakortti "*" -- "1" SattumaJaYhteismaa
       Toimintakortti "1" -- "1" Toiminto
       class Noppa{
       arvo

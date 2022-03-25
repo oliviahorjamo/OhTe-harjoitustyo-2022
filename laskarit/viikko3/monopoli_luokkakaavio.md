@@ -43,7 +43,7 @@ Tehtävä 1: Monopoli -pelin luokkakaavio
       class Raha{
       arvo
       }
-      class "Normaalit kadut"{
+      class NormaalitKadut{
       nimi
       }
       class Toiminto{

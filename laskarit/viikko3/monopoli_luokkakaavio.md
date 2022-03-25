@@ -16,4 +16,18 @@ Tehtävä 1: Monopoli -pelin luokkakaavio
       Pelaaja "1" -- "1" Pelinappula
       Pelinappula "0...8" -- "1" Ruutu
       Pelilauta "1" -- "40" Ruutu
+      class Noppa{
+      arvo
+      }
+      class Pelaaja{
+      nimi
+      }
+      class Pelinappula{
+      pelaajan nimi
+      väri
+      }
+      class Ruutu{
+      nimi
+      }
+      
 ```

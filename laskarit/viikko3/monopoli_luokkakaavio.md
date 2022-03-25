@@ -20,13 +20,18 @@ Tehtävä 1: Monopoli -pelin luokkakaavio
       Pelinappula "0...8" -- "*" SattumaJaYhteismaa
       Pelinappula "0..8" -- "*" AsematJaLaitokset
       Pelinappula "0...8" -- "*" NormaalitKadut
+      Pelinappula "0...8" -- "1" Vankila
       NormaalitKadut "*" -- "1" Pelaaja
       Talo "1...4" -- "1" NormaalitKadut
       Hotelli "0...1" -- "1" NormaalitKadut
-      Pelilauta "1" -- "40" Ruutu
       Raha "*" -- "1" Pelaaja
       Toimintakortti "*" -- "1" SattumaJaYhteismaa
       Toimintakortti "1" -- "1" Toiminto
+      SattumaJaYhteismaa "1" -- "1" Toiminto
+      AsematJaLaitokset "1" -- "1" Toiminto
+      NormaalitKadut "1" -- "1" Toiminto
+      Aloitus "1" -- "1" Toiminto
+      Vankila "1" -- "1" Toiminto
       class Noppa{
       arvo
       }

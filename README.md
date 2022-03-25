@@ -4,7 +4,7 @@
 
 Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus. 
 
-# Dokumentaatio
+### Dokumentaatio
 
 [Vaatimusmäärittely](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/vaatimusmaarittely.md)
 

@@ -17,7 +17,7 @@ Tehtävä 1: Monopoli -pelin luokkakaavio
       Pelinappula "0...8" -- "1" Aloitusruutu
       Monopoli "1" -- "1" Aloitusruutu
       Monopoli "1" -- "1" Vankila
-      Pelinappula "0...8" -- "*" "Sattuma ja yhteismaa"
+      Pelinappula "0...8" -- "*" Sattuma ja yhteismaa
       Pelinappula "0..8" -- "*" "Asemat ja laitokset"
       Pelinappula "0...8" -- "*" Normaalit kadut
       "Normaalit kadut" "*" -- "1" Pelaaja

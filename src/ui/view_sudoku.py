@@ -9,6 +9,8 @@ class ViewSudoku:
 
     def __init__(self, cell_size, sprites, sudoku):
 
+        pygame.font.init()
+
         self.sprites = sprites
         self.grid = sudoku.grid
         self.cell_size = cell_size
@@ -23,11 +25,9 @@ class ViewSudoku:
         #palauttaa hiiren kohdalla olevan koordinaatin
         pass
 
-    def draw():
-        #piirtää sudokun viivat ja täyttää värillä numerot jotka jo täytetty
-        #ehkä lihavoituna alkuperäiset numerot
+    def draw_lines_and_numbers():
         pass
-
+        
     def draw_unvalid():
         #korostaa punaisella epävalidin vastauksen syyn
         pass
@@ -43,7 +43,7 @@ class ViewSudoku:
                 if cell == 0:
                     self.empty_squares.add(self.sprites.EmptySquare(normalized_x, normalized_y))
                 else:
-                    self.original_numbers.add(self.sprites.OriginalNumber(normalized_x, normalized_y))
+                    self.original_numbers.add(self.sprites.OriginalNumber(str(cell), normalized_x, normalized_y))
 
         self.all_sprites.add(self.empty_squares, self.original_numbers)
 
@@ -82,6 +82,10 @@ class GameLoop:
                 break
 
             self.clock.tick(60)
+
+    #def draw_lines_and_numbers(self):
+        #piirtää sudokun viivat ja täyttää värillä numerot jotka jo täytetty
+
 
     def _handle_events(self):
         for event in pygame.event.get():
@@ -126,5 +130,13 @@ class Renderer:
 
     def render(self):
         self.view_sudoku.all_sprites.draw(self._display)
+
+        for sprite in self.view_sudoku.original_numbers:
+            self._display.blit(sprite.text, (sprite.rect.x, sprite.rect.y))
+
+        for i in range(len(self.view_sudoku.grid)):
+            if i % 3 == 0:
+                pygame.draw.line(self._display, (0,0,0), (0, i*self.view_sudoku.cell_size), (pygame.display.get_surface().get_width(), i * self.view_sudoku.cell_size), 6)
+                pygame.draw.line(self._display, (0,0,0), (i * self.view_sudoku.cell_size, 0), (i * self.view_sudoku.cell_size, pygame.display.get_surface().get_height()), 6)
 
         pygame.display.update()

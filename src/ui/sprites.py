@@ -20,10 +20,12 @@ class EmptySquare(pygame.sprite.Sprite):
         self.rect.y = y
 
 class OriginalNumber(pygame.sprite.Sprite):
-    def __init__(self, x=0, y=0):
+    def __init__(self, text, x=0, y=0):
         super().__init__()
         self.image = pygame.image.load(os.path.join(dirname, "pictures", "original_number.png"))
         self.rect = self.image.get_rect()
+        self.font = pygame.font.SysFont("Arial", 30)
+        self.text = self.font.render(text, 1, (0,0,0))
         self.rect.x = x
         self.rect.y = y
 

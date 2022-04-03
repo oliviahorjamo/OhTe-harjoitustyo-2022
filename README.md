@@ -1,21 +1,35 @@
-# Helsingin yliopiston Ohjelmistotekniikka -kurssin harjoitustyö ja tehtävät
-
-## Projekti
+# OhTe projekti - SudokuGame
 
 Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus. 
 
-### Dokumentaatio
+## Dokumentaatio
 
-[Vaatimusmäärittely](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/vaatimusmaarittely.md)
+- [Vaatimusmäärittely](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/vaatimusmaarittely.md)
+- [Työaikakirjanpito](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/tyoaikakirjanpito.md)
+- [Changelog](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/changelog.md)
 
-## Tehtävät
+## Komentorivitoiminnot
 
-### Viikko 1
+### Ohjelman suorittaminen
+Ohjelman voi suorittaa komennolla
 
-[gitlog.txt](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/laskarit/viikko1/gitlog.txt)
+```bash
+poetry run invoke start
+```
 
-[komentorivi.txt](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/laskarit/viikko1/komentorivi.txt)
+### Testaaminen
+Ohjelman testit voi suorittaa komennolla:
 
-### Viikko 2
+```bash
+poetry run invoke test
+```
 
-[coveragereport.png](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/laskarit/viikko2/coveragereport.png)
+### Testikattavuus
+
+Testikattavuusraportin voi luoda komennolla:
+
+```bash
+poetry run invoke coverage-report
+```
+
+Raportti luodaan _htmlcov_-hakemistoon.

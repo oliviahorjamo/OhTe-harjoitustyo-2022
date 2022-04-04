@@ -1,3 +1,4 @@
+#tämä moduuli vastaa sovelluslogiikasta
 
 class SudokuService:
 

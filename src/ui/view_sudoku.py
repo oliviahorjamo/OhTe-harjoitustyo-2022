@@ -1,4 +1,5 @@
 
+import enum
 from types import CellType
 from matplotlib.pyplot import get
 import pygame
@@ -52,16 +53,13 @@ class ViewSudoku:
         self.all_sprites.add(self.empty_squares, self.original_numbers, self.selected_square)
 
     def move(self, dx = 0, dy = 0):
-        #tän pitäis liikuttaa valitun ruudun neliötä
-        #self._level.move_robot(dx=-self._cell_size)
-        
         if self.can_move(dx, dy):
             self.selected_square.rect.move_ip(dx, dy)
 
     def can_move(self, dx, dy):
         if (self.selected_square.rect[0] + dx < 0 or 
             self.selected_square.rect[1] + dy < 0 or 
-            self.selected_square.rect[0] + dx + self.cell_size > 9*self.cell_size or 
+            self.selected_square.rect[0] + dx + self.cell_size > 9 * self.cell_size or 
             self.selected_square.rect[1] + dy + self.cell_size > 9 * self.cell_size):
             return False
         return True
@@ -72,6 +70,12 @@ class ViewSudoku:
     def get_normalized_coordinates(self):
         coordinates = self.get_coordinates()
         return int(coordinates[0] / self.cell_size), int(coordinates[1] / self.cell_size)
+
+    def get_grid(self, index):
+        grids = [[0,1,2], [3,4,5], [6,7,8]]
+        for grid in grids:
+            if index in grid:
+                return min(grid), max(grid)
 
     def update(self, current_time):
         pass
@@ -99,6 +103,12 @@ class ViewSudoku:
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
 
+            #TODO tähän testaus että herjaa jos selvä virhe
+            print("row", row, "column", column, "number", number)
+            self.check_column(row = row, column = column, number = number)
+            self.check_row(column = column, row = row, number = number)
+            self.check_small_grid(row = row, column = column, number = number)
+
     def delete_number(self):
         for sprite in self.collide_added_numbers():
             sprite.kill()
@@ -107,6 +117,28 @@ class ViewSudoku:
         self.grid[row][column] = 0
         self.empty_squares.add(self.sprites.EmptySquare(x, y))
         self.all_sprites.add(self.sprites.EmptySquare(x, y))
+
+    def check_row(self, column, row, number):
+        column_index = -1
+        for value in self.grid[row]:
+            column_index += 1
+            if value == number and column_index != column:
+                print("samalla rivillä virhe!")
+
+    def check_column(self, row, column, number):
+        for row_index in range(len(self.grid)):
+            for column_index in range(len(self.grid[0])):
+                if column_index == column and self.grid[row_index][column_index] == number and row_index != row:
+                    print("samassa kolumnissa virhe")
+                    print("row", row, "column_index", column_index, "number", self.grid[row][column_index])
+                
+    def check_small_grid(self, row, column, number):
+        row_min, row_max = self.get_grid(row)
+        column_min, column_max = self.get_grid(column)
+        for row_value in range(row_min, row_max + 1):
+            for column_value in range(column_min, column_max + 1):
+                if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
+                    print("samassa ruudukossa virhe")
             
 
 class GameLoop:

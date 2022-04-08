@@ -1,18 +1,15 @@
 #Tää tiedosto pyörittää aluksi koko hommaa / starttaa sovelluksen
 
+import pygame
 from entities.sudoku import Sudoku
 from ui.view_sudoku import ViewSudoku
 from ui.view_sudoku import GameLoop
 from ui.view_sudoku import Renderer
 import ui.sprites
-import pygame
 
 def main():
-
     cell_size = 33
-
     sudoku = Sudoku(1)
-
     height = len(sudoku.grid)
     width = len(sudoku.grid[0])
     display_height = height * cell_size
@@ -21,7 +18,7 @@ def main():
     view_sudoku = ViewSudoku(cell_size, sprites = ui.sprites, sudoku = sudoku)
     renderer = Renderer(display, view_sudoku)
     game_loop = GameLoop(view_sudoku, cell_size, renderer)
-    
+
     pygame.init()
     game_loop.start()
 

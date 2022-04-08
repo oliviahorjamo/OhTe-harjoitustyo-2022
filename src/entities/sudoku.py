@@ -1,17 +1,7 @@
 
 class Sudoku:
-    #sudoku tarkoittaa alkuperäisiä ylläpitäjän luomia sudokuita
-
-    #sudoku -luokan oliolla tietty id, jolla tallennetaan alkuperäiset numerot kun uudet pelaajat tallentaa keskeneräisiä vastauksia
-    
-    #myöhemmin metodit erikseen numeroiden lisäämiselle
-
     def __init__(self, id):
         self.id = id
-
-        #default grid
-        #myöhemmin oma funktionsa sudokun luomiselle
-
         self.grid = [
         [7, 8, 0, 4, 0, 0, 1, 2, 0],
         [6, 0, 0, 0, 7, 5, 0, 0, 9],

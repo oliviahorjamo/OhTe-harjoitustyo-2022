@@ -17,6 +17,7 @@ class ViewSudoku:
 
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
+        self.selected_square = sprites.SelectedSquare(self.cell_size)
         self.all_sprites = pygame.sprite.Group()
 
         self._initialize_sprites(sudoku.grid)
@@ -44,18 +45,32 @@ class ViewSudoku:
                     self.empty_squares.add(self.sprites.EmptySquare(normalized_x, normalized_y))
                 else:
                     self.original_numbers.add(self.sprites.OriginalNumber(str(cell), normalized_x, normalized_y))
+        self.all_sprites.add(self.empty_squares, self.original_numbers, self.selected_square)
 
-        self.all_sprites.add(self.empty_squares, self.original_numbers)
-
-    def move(self):
+    def move(self, dx = 0, dy = 0):
         #tän pitäis liikuttaa valitun ruudun neliötä
-        pass
+        #self._level.move_robot(dx=-self._cell_size)
+        
+        #TODO virheen käsittely eli katsoo ettei mee ruudukosta yli
+        self.selected_square.rect.move_ip(dx, dy)
 
     def update(self, current_time):
         pass
 
     def is_completed(self):
         pass
+
+    def add_number(self, number):
+        #TODO lisää testit ettei voi lisätä alkuperäsen tai vanhan numeron päälle
+        coordinates = self.selected_square.rect
+        column = int(coordinates[0] / self.cell_size)
+        row = int(coordinates[1] / self.cell_size)
+        print(row, column)
+        
+        print(coordinates)
+        print("grid", self.grid)
+        self.grid[row][column] = number
+        print("grid lopuksi", self.grid)
 
 class GameLoop:
 
@@ -93,17 +108,18 @@ class GameLoop:
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_LEFT:
-                    self.view_sudoku.move_x(dx = - self._cell_size)
+                    self.view_sudoku.move(dx = - self._cell_size)
                 if event.key == pygame.K_RIGHT:
-                    self.view_sudoku.move_x(dx=self._cell_size)
+                    self.view_sudoku.move(dx=self._cell_size)
                 if event.key == pygame.K_UP:
-                    self.view_sudoku.move_y(dy=-self._cell_size)
+                    self.view_sudoku.move(dy=-self._cell_size)
                 if event.key == pygame.K_DOWN:
-                    self.view_sudoku.move_y(dy=self._cell_size)
+                    self.view_sudoku.move(dy=self._cell_size)
 
-                if event.key == pygame.NUMBER:
+                if event.key == pygame.K_0:
                     #tässä kohtaa pitäis asettaa numero myös pelin omaan gridiin
-                    self.view_sudoku.add_number(x, y, number)
+                    #elf.view_sudoku.add_number(x, y, number)
+                    self.view_sudoku.add_number(0)
 
             elif event.type == pygame.QUIT:
                 return False

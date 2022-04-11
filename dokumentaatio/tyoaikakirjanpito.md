@@ -8,4 +8,5 @@
 |3.4    |  3   |Alkuperäisten numeroiden näyttäminen ruudukossa ja ensimmäiset testit |
 |7.4.   |  1   |Valitun ruudun piirtäminen |
 |8.4.   |  2   |Numeroiden lisääminen|
-|yht    |  13  |
+|11.4.  |  5   |Sovelluslogiikan parantaminen ja lisää unittestejä|
+|yht    |  18  |

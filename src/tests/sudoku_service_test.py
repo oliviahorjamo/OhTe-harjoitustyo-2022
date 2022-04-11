@@ -43,7 +43,8 @@ class TestSudoku(unittest.TestCase):
         ]))
 
     def test_add_number(self):
-        self.assertEqual(sudoku_service.add_number(self.originals.grid, self.sudoku, 2, 2, 2), True)
+        self.assertEqual(sudoku_service.add_number(
+            self.originals.grid, self.sudoku, 2, 2, 2), True)
         self.assertEqual(str(self.sudoku.grid), str([
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -57,7 +58,8 @@ class TestSudoku(unittest.TestCase):
         ]))
 
     def test_add_number_not_allowed(self):
-        self.assertEqual(sudoku_service.add_number(self.originals.grid, self.sudoku, 0, 0, 2), False)
+        self.assertEqual(sudoku_service.add_number(
+            self.originals.grid, self.sudoku, 0, 0, 2), False)
         self.assertEqual(str(self.sudoku.grid), str([
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -72,7 +74,8 @@ class TestSudoku(unittest.TestCase):
 
     def test_delete_number(self):
         sudoku_service.add_number(self.originals.grid, self.sudoku, 0, 0, 2)
-        self.assertEqual(sudoku_service.delete_number(self.originals.grid, self.sudoku, 2, 2), True)
+        self.assertEqual(sudoku_service.delete_number(
+            self.originals.grid, self.sudoku, 2, 2), True)
         self.assertEqual(str(self.sudoku.grid), str([
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -86,7 +89,8 @@ class TestSudoku(unittest.TestCase):
         ]))
 
     def test_delete_number_not_allowed(self):
-        self.assertEqual(sudoku_service.delete_number(self.originals.grid, self.sudoku, 0, 0), False)
+        self.assertEqual(sudoku_service.delete_number(
+            self.originals.grid, self.sudoku, 0, 0), False)
         self.assertEqual(str(self.originals.grid), str([
             [7, 8, 0, 4, 0, 0, 1, 2, 0],
             [6, 0, 0, 0, 7, 5, 0, 0, 9],

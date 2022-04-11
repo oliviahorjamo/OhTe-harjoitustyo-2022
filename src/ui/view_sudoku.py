@@ -3,8 +3,6 @@ import pygame
 import os
 from services.sudoku_service import sudoku_service
 from entities.sudoku import OriginalSudoku
-#import sprites
-#from entities.sudoku import Sudoku
 
 
 class ViewSudoku:
@@ -116,7 +114,7 @@ class ViewSudoku:
     def delete_number(self):
         column, row = self.get_normalized_coordinates()
         if sudoku_service.delete_number(self.originals, self.sudoku, row, column):
-            #testaus ettei numero oo alkuperäinen eli voi poistaa
+            # testaus ettei numero oo alkuperäinen eli voi poistaa
             for sprite in self.collide_added_numbers():
                 sprite.kill()
             x, y = self.get_coordinates()
@@ -124,6 +122,7 @@ class ViewSudoku:
             self.empty_squares.add(self.sprites.EmptySquare(x, y))
             self.all_sprites.add(self.sprites.EmptySquare(x, y))
 
+    # näitä ei käytetä sittenkään eli ei anneta virheviestiä heti jos käyttäjä tekee virheen vaan vasta kun valmis
 
     def check_row(self, column, row, number):
         column_index = -1
@@ -151,12 +150,8 @@ class ViewSudoku:
 
 class GameLoop:
 
-    # pyörittää peliä eli tarkistaa mitä näppäimiä on painettu ja toimii sen mukaisesti
-    # automaattisesti päivittää näyttöä
-
     def __init__(self, view_sudoku, cell_size, renderer):
         self._renderer = renderer
-        #self._event_queue = pygame.event.get()
         self.clock = Clock()
         self._cell_size = cell_size
         self.view_sudoku = view_sudoku
@@ -174,9 +169,6 @@ class GameLoop:
                 break
 
             self.clock.tick(60)
-
-    # def draw_lines_and_numbers(self):
-        # piirtää sudokun viivat ja täyttää värillä numerot jotka jo täytetty
 
     def _handle_events(self):
         for event in pygame.event.get():
@@ -242,10 +234,11 @@ class Renderer:
         self.view_sudoku.all_sprites.draw(self._display)
 
         for sprite in self.view_sudoku.original_numbers:
-            self._display.blit(sprite.text, (sprite.rect.x, sprite.rect.y))
+            self._display.blit(
+                sprite.text, (sprite.rect.x + self.view_sudoku.cell_size / 4, sprite.rect.y))
 
         for sprite in self.view_sudoku.added_numbers:
-            self._display.blit(sprite.text, (sprite.rect.x, sprite.rect.y))
+            self._display.blit(sprite.text, (sprite.rect.x + self.view_sudoku.cell_size / 4, sprite.rect.y))
 
         for i in range(len(self.view_sudoku.grid)):
             if i % 3 == 0:
@@ -254,7 +247,7 @@ class Renderer:
                 pygame.draw.line(self._display, (0, 0, 0), (i * self.view_sudoku.cell_size, 0),
                                  (i * self.view_sudoku.cell_size, pygame.display.get_surface().get_height()), 6)
 
-        pygame.display.update()
-
         pygame.draw.rect(self.view_sudoku.selected_square.image,
                          self.view_sudoku.selected_square.color, self.view_sudoku.selected_square.rect, 7)
+
+        pygame.display.update()

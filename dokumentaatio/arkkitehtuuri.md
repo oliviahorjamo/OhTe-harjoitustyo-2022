@@ -22,8 +22,8 @@
       }
       ViewSudoku --> SudokuService
       ViewLogin --> SudokuService
-      SudokuService --> 0..1 User
-      SudokuService --> 0..1 Sudoku
+      SudokuService --> "0..1" User
+      SudokuService --> "0..1" Sudoku
       SudokuService --> UserRepository
       UserRepository --> User
       SudokuService --> SudokuRepository

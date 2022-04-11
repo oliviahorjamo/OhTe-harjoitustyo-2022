@@ -9,4 +9,4 @@
 |7.4.   |  1   |Valitun ruudun piirtäminen |
 |8.4.   |  2   |Numeroiden lisääminen|
 |11.4.  |  5   |Sovelluslogiikan parantaminen ja lisää unittestejä|
-|yht    |  13  |
+|yht    |  18  |

@@ -5,6 +5,9 @@
           password
       }
       class Sudoku{
+          grid
+      }
+      class OriginalSudoku{
           id
           grid
       }
@@ -28,4 +31,7 @@
       UserRepository --> User
       SudokuService --> SudokuRepository
       SudokuRepository --> Sudoku
+      Sudoku --> OriginalSudoku
+      OriginalSudokuRepository --> OriginalSudoku
+      SudokuService --> OriginalSudokuRepository
 ```

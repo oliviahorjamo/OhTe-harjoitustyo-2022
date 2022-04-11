@@ -1,22 +1,22 @@
 
-import enum
-from types import CellType
-from matplotlib.pyplot import get
 import pygame
 import os
-
-from requests import delete
+from services.sudoku_service import sudoku_service
+from entities.sudoku import OriginalSudoku
 #import sprites
 #from entities.sudoku import Sudoku
 
+
 class ViewSudoku:
 
-    def __init__(self, cell_size, sprites, sudoku):
+    def __init__(self, cell_size, sprites, sudoku, original):
 
         pygame.font.init()
 
         self.sprites = sprites
         self.grid = sudoku.grid
+        self.originals = original.grid
+        self.sudoku = sudoku
         self.cell_size = cell_size
 
         self.empty_squares = pygame.sprite.Group()
@@ -25,42 +25,49 @@ class ViewSudoku:
         self.added_numbers = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
-        self._initialize_sprites(sudoku.grid)
+        self._initialize_sprites(self.grid, self.originals)
 
     def get_coordinate():
-        #palauttaa hiiren kohdalla olevan koordinaatin
+        # palauttaa hiiren kohdalla olevan koordinaatin
         pass
 
     def draw_lines_and_numbers():
         pass
-        
+
     def draw_unvalid():
-        #korostaa punaisella epävalidin vastauksen syyn
+        # korostaa punaisella epävalidin vastauksen syyn
         pass
 
-    def _initialize_sprites(self, grid):
+    def _initialize_sprites(self, grid, originals):
         height = len(grid)
         width = len(grid[0])
         for y in range(height):
             for x in range(width):
-                cell = grid[y][x]
+                original = originals[y][x]
+                added = grid[y][x]
                 normalized_x = x * self.cell_size
                 normalized_y = y * self.cell_size
-                if cell == 0:
-                    self.empty_squares.add(self.sprites.EmptySquare(normalized_x, normalized_y))
-                else:
-                    self.original_numbers.add(self.sprites.OriginalNumber(str(cell), normalized_x, normalized_y))
-        self.all_sprites.add(self.empty_squares, self.original_numbers, self.selected_square)
+                if added == 0 and original == 0:
+                    self.empty_squares.add(
+                        self.sprites.EmptySquare(normalized_x, normalized_y))
+                elif original != 0:
+                    self.original_numbers.add(self.sprites.OriginalNumber(
+                        str(original), normalized_x, normalized_y))
+                elif added != 0:
+                    self.added_numbers.add(self.sprites.AddedNumber(
+                        str(added), normalized_x, normalized_y))
+        self.all_sprites.add(self.empty_squares,
+                             self.original_numbers, self.selected_square)
 
-    def move(self, dx = 0, dy = 0):
+    def move(self, dx=0, dy=0):
         if self.can_move(dx, dy):
             self.selected_square.rect.move_ip(dx, dy)
 
     def can_move(self, dx, dy):
-        if (self.selected_square.rect[0] + dx < 0 or 
-            self.selected_square.rect[1] + dy < 0 or 
-            self.selected_square.rect[0] + dx + self.cell_size > 9 * self.cell_size or 
-            self.selected_square.rect[1] + dy + self.cell_size > 9 * self.cell_size):
+        if (self.selected_square.rect[0] + dx < 0 or
+            self.selected_square.rect[1] + dy < 0 or
+            self.selected_square.rect[0] + dx + self.cell_size > 9 * self.cell_size or
+                self.selected_square.rect[1] + dy + self.cell_size > 9 * self.cell_size):
             return False
         return True
 
@@ -72,7 +79,7 @@ class ViewSudoku:
         return int(coordinates[0] / self.cell_size), int(coordinates[1] / self.cell_size)
 
     def get_grid(self, index):
-        grids = [[0,1,2], [3,4,5], [6,7,8]]
+        grids = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
         for grid in grids:
             if index in grid:
                 return min(grid), max(grid)
@@ -93,30 +100,30 @@ class ViewSudoku:
         return pygame.sprite.spritecollide(self.selected_square, self.empty_squares, False)
 
     def add_number(self, number):
-        #TODO lisää testit ettei voi lisätä alkuperäsen tai vanhan numeron päälle
-        if len(self.collide_original_numbers()) == 0 and len(self.collide_added_numbers()) == 0:
+        column, row = self.get_normalized_coordinates()
+        if sudoku_service.add_number(self.originals, self.sudoku, row, column, number):
             x, y = self.get_coordinates()
-            column, row = self.get_normalized_coordinates()
-            self.grid[row][column] = number
+
             for sprite in self.collide_empty_squares():
                 sprite.kill()
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
 
-            #TODO tähän testaus että herjaa jos selvä virhe
-            print("row", row, "column", column, "number", number)
-            self.check_column(row = row, column = column, number = number)
-            self.check_row(column = column, row = row, number = number)
-            self.check_small_grid(row = row, column = column, number = number)
+            self.check_column(row=row, column=column, number=number)
+            self.check_row(column=column, row=row, number=number)
+            self.check_small_grid(row=row, column=column, number=number)
 
     def delete_number(self):
-        for sprite in self.collide_added_numbers():
-            sprite.kill()
-        x, y = self.get_coordinates()
         column, row = self.get_normalized_coordinates()
-        self.grid[row][column] = 0
-        self.empty_squares.add(self.sprites.EmptySquare(x, y))
-        self.all_sprites.add(self.sprites.EmptySquare(x, y))
+        if sudoku_service.delete_number(self.originals, self.sudoku, row, column):
+            #testaus ettei numero oo alkuperäinen eli voi poistaa
+            for sprite in self.collide_added_numbers():
+                sprite.kill()
+            x, y = self.get_coordinates()
+            column, row = self.get_normalized_coordinates()
+            self.empty_squares.add(self.sprites.EmptySquare(x, y))
+            self.all_sprites.add(self.sprites.EmptySquare(x, y))
+
 
     def check_row(self, column, row, number):
         column_index = -1
@@ -130,8 +137,9 @@ class ViewSudoku:
             for column_index in range(len(self.grid[0])):
                 if column_index == column and self.grid[row_index][column_index] == number and row_index != row:
                     print("samassa kolumnissa virhe")
-                    print("row", row, "column_index", column_index, "number", self.grid[row][column_index])
-                
+                    print("row", row, "column_index", column_index,
+                          "number", self.grid[row][column_index])
+
     def check_small_grid(self, row, column, number):
         row_min, row_max = self.get_grid(row)
         column_min, column_max = self.get_grid(column)
@@ -139,12 +147,12 @@ class ViewSudoku:
             for column_value in range(column_min, column_max + 1):
                 if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
                     print("samassa ruudukossa virhe")
-            
+
 
 class GameLoop:
 
-    #pyörittää peliä eli tarkistaa mitä näppäimiä on painettu ja toimii sen mukaisesti
-    #automaattisesti päivittää näyttöä
+    # pyörittää peliä eli tarkistaa mitä näppäimiä on painettu ja toimii sen mukaisesti
+    # automaattisesti päivittää näyttöä
 
     def __init__(self, view_sudoku, cell_size, renderer):
         self._renderer = renderer
@@ -167,9 +175,8 @@ class GameLoop:
 
             self.clock.tick(60)
 
-    #def draw_lines_and_numbers(self):
-        #piirtää sudokun viivat ja täyttää värillä numerot jotka jo täytetty
-
+    # def draw_lines_and_numbers(self):
+        # piirtää sudokun viivat ja täyttää värillä numerot jotka jo täytetty
 
     def _handle_events(self):
         for event in pygame.event.get():
@@ -177,7 +184,7 @@ class GameLoop:
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_LEFT:
-                    self.view_sudoku.move(dx = - self._cell_size)
+                    self.view_sudoku.move(dx=- self._cell_size)
                 if event.key == pygame.K_RIGHT:
                     self.view_sudoku.move(dx=self._cell_size)
                 if event.key == pygame.K_UP:
@@ -213,7 +220,7 @@ class GameLoop:
     def _render(self):
         self._renderer.render()
 
-        
+
 class Clock:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -231,7 +238,7 @@ class Renderer:
         self.view_sudoku = view_sudoku
 
     def render(self):
-        self._display.fill((255,255,255))
+        self._display.fill((255, 255, 255))
         self.view_sudoku.all_sprites.draw(self._display)
 
         for sprite in self.view_sudoku.original_numbers:
@@ -240,12 +247,14 @@ class Renderer:
         for sprite in self.view_sudoku.added_numbers:
             self._display.blit(sprite.text, (sprite.rect.x, sprite.rect.y))
 
-
         for i in range(len(self.view_sudoku.grid)):
             if i % 3 == 0:
-                pygame.draw.line(self._display, (0,0,0), (0, i*self.view_sudoku.cell_size), (pygame.display.get_surface().get_width(), i * self.view_sudoku.cell_size), 6)
-                pygame.draw.line(self._display, (0,0,0), (i * self.view_sudoku.cell_size, 0), (i * self.view_sudoku.cell_size, pygame.display.get_surface().get_height()), 6)
+                pygame.draw.line(self._display, (0, 0, 0), (0, i*self.view_sudoku.cell_size),
+                                 (pygame.display.get_surface().get_width(), i * self.view_sudoku.cell_size), 6)
+                pygame.draw.line(self._display, (0, 0, 0), (i * self.view_sudoku.cell_size, 0),
+                                 (i * self.view_sudoku.cell_size, pygame.display.get_surface().get_height()), 6)
 
         pygame.display.update()
 
-        pygame.draw.rect(self.view_sudoku.selected_square.image, self.view_sudoku.selected_square.color, self.view_sudoku.selected_square.rect, 7)
+        pygame.draw.rect(self.view_sudoku.selected_square.image,
+                         self.view_sudoku.selected_square.color, self.view_sudoku.selected_square.rect, 7)

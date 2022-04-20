@@ -29,7 +29,8 @@ class UI:
         display_height = height * cell_size
         display_width = width * cell_size
         self.display = pygame.display.set_mode((display_width, display_height))
-        view_sudoku = ViewSudoku(cell_size, sprites = ui.sprites, sudoku = sudoku, original_sudoku = original_sudoku)
+        view_sudoku = ViewSudoku(cell_size, sprites = ui.sprites, sudoku = sudoku, 
+                                    original_sudoku = original_sudoku, display = self. display)
         renderer = Renderer(self.display, view_sudoku)
         game_loop = GameLoop(view_sudoku, cell_size, renderer)
         game_loop.start()

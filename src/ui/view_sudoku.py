@@ -8,7 +8,7 @@ from entities.sudoku import OriginalSudoku
 
 class ViewSudoku:
 
-    def __init__(self, cell_size, sprites, sudoku, original_sudoku):
+    def __init__(self, cell_size, sprites, sudoku, original_sudoku, display):
 
         pygame.font.init()
 
@@ -17,6 +17,7 @@ class ViewSudoku:
         self.originals = original_sudoku.grid
         self.sudoku = sudoku
         self.cell_size = cell_size
+        self.display = display
 
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
@@ -30,8 +31,28 @@ class ViewSudoku:
         # palauttaa hiiren kohdalla olevan koordinaatin
         pass
 
-    def draw_lines_and_numbers():
-        pass
+    def draw_original_numbers(self):
+        for sprite in self.original_numbers:
+                self.display.blit(
+                sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
+
+    def draw_added_numbers(self):
+        for sprite in self.added_numbers:
+            self.display.blit(sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
+
+    def draw_lines(self):
+        for i in range(len(self.grid)):
+            if i % 3 == 0:
+                pygame.draw.line(self.display, (0, 0, 0), (0, i*self.cell_size),
+                                 (pygame.display.get_surface().get_width(), i * self.cell_size), 6)
+                pygame.draw.line(self.display, (0, 0, 0), (i * self.cell_size, 0),
+                                 (i * self.cell_size, pygame.display.get_surface().get_height()), 6)
+
+    def draw_selected_square(self):
+        pygame.draw.rect(self.selected_square.image,
+                         self.selected_square.color, self.selected_square.rect, 7)
+
+
 
     def draw_unvalid():
         # korostaa punaisella epävalidin vastauksen syyn

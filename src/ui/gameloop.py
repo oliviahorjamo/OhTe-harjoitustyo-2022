@@ -1,32 +1,50 @@
 import pygame
 from ui.clock import Clock
 from ui.renderer import Renderer
+from ui.view_mainpage import mainpage
+from ui.view_sudoku import view_sudoku
 
 class GameLoop:
 
-    def __init__(self, view_sudoku, cell_size, renderer):
-        self._renderer = renderer
-        self.clock = Clock()
-        self._cell_size = cell_size
+    def __init__(self):
+        self.mainpage = mainpage
         self.view_sudoku = view_sudoku
+        self.clock = Clock()
+        self._cell_size = 33
 
     def start(self):
+        self._renderer = Renderer(self.mainpage.display)
         while True:
             if self._handle_events() == False:
                 break
 
-            current_time = self.clock.get_ticks()
-            self.view_sudoku.update(current_time)
-            self._render()
+            #current_time = self.clock.get_ticks()
+            #self.view_sudoku.update(current_time)
+            self._render_mainpage()
+
+
+            self.clock.tick(60)
+
+    def start_sudoku_view(self):
+        self._renderer = Renderer(self.view_sudoku.display)
+        while True:
+            if self._handle_events() == False:
+                break
+
+            self._render_sudoku()
 
             if self.view_sudoku.is_completed():
                 break
 
             self.clock.tick(60)
+        
+
 
     def _handle_events(self):
         for event in pygame.event.get():
 
+                #TODO lisää tähän kans hiiren käsittelyt jotta
+                #saadaan siirtymät mainpagelta eteenpäin
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_LEFT:
@@ -63,5 +81,8 @@ class GameLoop:
             elif event.type == pygame.QUIT:
                 return False
 
-    def _render(self):
-        self._renderer.render()
+    def _render_mainpage(self):
+        self._renderer.render_mainpage()
+
+    def _render_sudoku(self):
+        self._renderer.render_sudoku()

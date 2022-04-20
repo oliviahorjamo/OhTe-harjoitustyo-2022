@@ -2,26 +2,31 @@
 import pygame
 import os
 from services.sudoku_service import sudoku_service
-from entities.sudoku import OriginalSudoku
-#import ui.sprites
+from entities.sudoku import OriginalSudoku, Sudoku
+import ui.sprites
 
 
 class ViewSudoku:
 
-    def __init__(self, cell_size, sprites, sudoku, original_sudoku, display):
+    def __init__(self):
 
         pygame.font.init()
 
-        self.sprites = sprites
+        original_sudoku = sudoku_service.find_original_numbers(1)
+        sudoku = Sudoku(original_sudoku)
+        self.sprites = ui.sprites
         self.grid = sudoku.grid
         self.originals = original_sudoku.grid
         self.sudoku = sudoku
-        self.cell_size = cell_size
-        self.display = display
+        self.cell_size = 33
+        
+        display_height = len(self.grid)* self.cell_size
+        display_width = len(self.grid) * self.cell_size
+        self.display = pygame.display.set_mode((display_width, display_height))
 
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
-        self.selected_square = sprites.SelectedSquare(self.cell_size)
+        self.selected_square = self.sprites.SelectedSquare(self.cell_size)
         self.added_numbers = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
@@ -31,21 +36,21 @@ class ViewSudoku:
         # palauttaa hiiren kohdalla olevan koordinaatin
         pass
 
-    def draw_original_numbers(self):
+    def draw_original_numbers(self, display):
         for sprite in self.original_numbers:
-                self.display.blit(
+                display.blit(
                 sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
-    def draw_added_numbers(self):
+    def draw_added_numbers(self, display):
         for sprite in self.added_numbers:
-            self.display.blit(sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
+            display.blit(sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
-    def draw_lines(self):
+    def draw_lines(self, display):
         for i in range(len(self.grid)):
             if i % 3 == 0:
-                pygame.draw.line(self.display, (0, 0, 0), (0, i*self.cell_size),
+                pygame.draw.line(display, (0, 0, 0), (0, i*self.cell_size),
                                  (pygame.display.get_surface().get_width(), i * self.cell_size), 6)
-                pygame.draw.line(self.display, (0, 0, 0), (i * self.cell_size, 0),
+                pygame.draw.line(display, (0, 0, 0), (i * self.cell_size, 0),
                                  (i * self.cell_size, pygame.display.get_surface().get_height()), 6)
 
     def draw_selected_square(self):
@@ -168,3 +173,5 @@ class ViewSudoku:
             for column_value in range(column_min, column_max + 1):
                 if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
                     print("samassa ruudukossa virhe")
+
+view_sudoku = ViewSudoku()

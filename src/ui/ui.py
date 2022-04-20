@@ -1,6 +1,8 @@
 
 import pygame
-from ui.view_sudoku import ViewSudoku, GameLoop, Renderer
+from ui.view_sudoku import ViewSudoku
+from ui.gameloop import GameLoop
+from ui.renderer import Renderer
 from ui.view_login import LoginView
 from ui.view_mainpage import Mainpage
 from entities.sudoku import OriginalSudoku, Sudoku
@@ -10,8 +12,8 @@ import ui.sprites
 class UI:
 
     def __init__(self):
-        self.start()
-        #self.start_sudoku_view()
+        #self.start()
+        self.start_sudoku_view()
 
     def start(self):
         display_height = 200

@@ -3,17 +3,18 @@ import pygame
 import os
 from services.sudoku_service import sudoku_service
 from entities.sudoku import OriginalSudoku
+#import ui.sprites
 
 
 class ViewSudoku:
 
-    def __init__(self, cell_size, sprites, sudoku, original):
+    def __init__(self, cell_size, sprites, sudoku, original_sudoku):
 
         pygame.font.init()
 
         self.sprites = sprites
         self.grid = sudoku.grid
-        self.originals = original.grid
+        self.originals = original_sudoku.grid
         self.sudoku = sudoku
         self.cell_size = cell_size
 

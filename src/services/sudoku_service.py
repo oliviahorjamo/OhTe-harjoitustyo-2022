@@ -1,6 +1,9 @@
 # tämä moduuli vastaa sovelluslogiikasta
 # tähän alkuun repositorioiden importtaaminen myöhemmin
 
+from repositories.sudoku_repository import original_sudokus_repository, sudoku_repository
+#from entities.sudoku import OriginalSudoku, Sudoku
+
 class SudokuService:
 
     def __init__(self):
@@ -14,8 +17,8 @@ class SudokuService:
         if existing_user:
             pass
 
-    def find_original_numbers(self, original_numbers__id):
-        pass
+    def find_original_numbers(self, original_numbers_id):
+        return original_sudokus_repository.find_by_id(original_numbers_id)
 
     def add_number(self, originals, sudoku, row, column, number):
         if self.test_square_empty(originals, sudoku, row, column):

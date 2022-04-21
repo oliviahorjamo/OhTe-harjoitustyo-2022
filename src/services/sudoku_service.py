@@ -42,5 +42,8 @@ class SudokuService:
             return True
         return False
 
+    def find_all_sudokus(self):
+        return original_sudokus_repository.find_all()
+
 
 sudoku_service = SudokuService()

@@ -2,13 +2,13 @@ import pygame
 from ui.clock import Clock
 from ui.renderer import Renderer
 from ui.view_mainpage import mainpage
-from ui.view_sudoku import view_sudoku
+from ui.view_sudoku import ViewSudoku
 
 class GameLoop:
 
     def __init__(self):
         self.mainpage = mainpage
-        self.view_sudoku = view_sudoku
+        #self.view_sudoku = view_sudoku
         self.clock = Clock()
         self._cell_size = 33
 
@@ -21,12 +21,10 @@ class GameLoop:
             #current_time = self.clock.get_ticks()
             #self.view_sudoku.update(current_time)
             self._render_mainpage()
-
-
             self.clock.tick(60)
 
     def start_sudoku_view(self):
-        self._renderer = Renderer(self.view_sudoku.display)
+        self._renderer = Renderer(self.view_sudoku.display, self.view_sudoku)
         while True:
             if self._handle_events() == False:
                 break
@@ -45,6 +43,17 @@ class GameLoop:
 
                 #TODO lisää tähän kans hiiren käsittelyt jotta
                 #saadaan siirtymät mainpagelta eteenpäin
+                #hiirellä klikkaaminen asettaa start gamen trueksi
+                #sit näytetään kyseinen sudoku
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed():
+                    show_sudoku_id = self.mainpage.select_sudoku(pygame.mouse.get_pos())
+                    if show_sudoku_id != None:
+                        self.show_sudoku = True
+                        self.view_sudoku = ViewSudoku(show_sudoku_id)
+                        self.start_sudoku_view()
+
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_LEFT:

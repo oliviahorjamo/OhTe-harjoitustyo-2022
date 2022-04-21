@@ -23,7 +23,7 @@ class OriginalSudokuRepository:
 
     def read(self):
         original_sudokus = []
-        with open(self.file_path) as file:
+        with open(self.file_path, encoding="utf-8") as file:
             for row in file:
                 row = row.replace("\n", "")
                 parts = row.split(";")
@@ -36,7 +36,7 @@ class OriginalSudokuRepository:
                         row.append(int(element))
                     grid.append(row)
                 original_sudokus.append(OriginalSudoku(id = id, grid = grid))
-            return original_sudokus
+        return original_sudokus
 
 
 class SudokuRepository:

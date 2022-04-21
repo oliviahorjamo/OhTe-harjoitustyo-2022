@@ -43,7 +43,6 @@ class SelectedSquare(pygame.sprite.Sprite):
         self.color = (255, 0, 0)
         #pygame.draw.rect(self.image, self.color, self.rect, 7)
 
-
 class WrongNumber(pygame.sprite.Sprite):
     pass
 
@@ -62,3 +61,17 @@ class AddedNumber(pygame.sprite.Sprite):
         self.rect.y = y
         self.font = pygame.font.SysFont("Arial", 30)
         self.text = self.font.render(text, 1, (0, 0, 0))
+
+#Mainpageen kuuluvat spritet
+
+class SudokuLink(pygame.sprite.Sprite):
+    def __init__(self, id, x=0, y=0):
+        super().__init__()
+        self.font = pygame.font.SysFont("Arial", 15)
+        self.text = self.font.render(f"sudoku numero: {id}", 1, (0,0,0))
+        self.image = pygame.Surface((100, 20))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.id = id
+

@@ -8,11 +8,11 @@ import ui.sprites
 
 class ViewSudoku:
 
-    def __init__(self):
+    def __init__(self, id):
 
         pygame.font.init()
 
-        original_sudoku = sudoku_service.find_original_numbers(1)
+        original_sudoku = sudoku_service.find_original_numbers(id)
         sudoku = Sudoku(original_sudoku)
         self.sprites = ui.sprites
         self.grid = sudoku.grid
@@ -174,4 +174,4 @@ class ViewSudoku:
                 if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
                     print("samassa ruudukossa virhe")
 
-view_sudoku = ViewSudoku()
+#view_sudoku = ViewSudoku(id)

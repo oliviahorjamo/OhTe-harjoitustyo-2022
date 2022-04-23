@@ -1,11 +1,13 @@
 import pygame
 #from ui.view_sudoku import view_sudoku
-from ui.view_mainpage import mainpage
+#from ui.view_mainpage import mainpage
+#from ui.view_login import login_view
 
 class Renderer:
-    def __init__(self, display, view_sudoku = None):
+    def __init__(self, display, view_sudoku = None, mainpage = None, login_view = None):
         self._display = display
         self.mainpage = mainpage
+        self.login_view = login_view
         self.view_sudoku = view_sudoku
 
     def render_sudoku(self):
@@ -24,4 +26,12 @@ class Renderer:
         self._display.fill((255,255,255))
         self.mainpage.draw_text(self._display)
         self.mainpage.draw_sudoku_list(self._display)
+        #print("ollaan mainpagen renderöinnissiä")
+        pygame.display.update()
+
+    def render_login_view(self):
+        self._display.fill((255, 255, 255))
+        self.login_view.draw_login_fields()
+        self.login_view.draw_login_button()
+        self.login_view.draw_create_user_button()
         pygame.display.update()

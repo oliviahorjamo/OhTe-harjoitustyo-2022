@@ -12,7 +12,7 @@ import ui.sprites
 class UI:
 
     def __init__(self):
-        self.mainpage = mainpage
+        #self.mainpage = mainpage
         #self.view_sudoku = view_sudoku
         self.gameloop = GameLoop()
         
@@ -21,7 +21,7 @@ class UI:
 
     def start(self):
         self.gameloop.start()
-        
+        #self.gameloop.start_mainpage()
 
     def start_sudoku_view(self):
         self.gameloop.start_sudoku_view()

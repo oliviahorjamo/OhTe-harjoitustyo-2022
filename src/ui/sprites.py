@@ -75,3 +75,24 @@ class SudokuLink(pygame.sprite.Sprite):
         self.rect.y = y
         self.id = id
 
+#Loginiin kuuluvat spritet
+
+class EnterTextField(pygame.sprite.Sprite):
+    def __init__(self, text = None, x=0, y=0):
+        super().__init__()
+        self.font = pygame.font.SysFont("Arial", 15)
+        self.text = self.font.render(text, 1, (0,0,0))
+        self.image = pygame.Surface((200, 20))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+class Button(pygame.sprite.Sprite):
+    def __init__(self, text, x=0, y=0):
+        super().__init__()
+        self.font = pygame.font.SysFont("Arial", 15)
+        self.text = self.font.render(text, 1, (0,0,0))
+        self.image = pygame.Surface((100, 20))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y

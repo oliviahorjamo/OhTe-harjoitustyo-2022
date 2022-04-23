@@ -20,15 +20,17 @@ class ViewSudoku:
         self.sudoku = sudoku
         self.cell_size = 33
         
-        display_height = len(self.grid)* self.cell_size
-        display_width = len(self.grid) * self.cell_size
-        self.display = pygame.display.set_mode((display_width, display_height))
+        #display_height = len(self.grid)* self.cell_size
+        #display_width = len(self.grid) * self.cell_size
+        #self.display = pygame.display.set_mode((display_width, display_height))
+        self.display = pygame.display.set_mode((500, 500))
 
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
-        self.selected_square = self.sprites.SelectedSquare(self.cell_size)
         self.added_numbers = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
+
+        self.selected_square = self.sprites.SelectedSquare(self.cell_size)
 
         self._initialize_sprites(self.grid, self.originals)
 
@@ -46,12 +48,12 @@ class ViewSudoku:
             display.blit(sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
     def draw_lines(self, display):
-        for i in range(len(self.grid)):
+        for i in range(len(self.grid) + 1):
             if i % 3 == 0:
                 pygame.draw.line(display, (0, 0, 0), (0, i*self.cell_size),
-                                 (pygame.display.get_surface().get_width(), i * self.cell_size), 6)
+                                 (len(self.grid) * self.cell_size, i * self.cell_size), 6)
                 pygame.draw.line(display, (0, 0, 0), (i * self.cell_size, 0),
-                                 (i * self.cell_size, pygame.display.get_surface().get_height()), 6)
+                                 (i * self.cell_size, len(self.grid) * self.cell_size), 6)
 
     def draw_selected_square(self):
         pygame.draw.rect(self.selected_square.image,
@@ -173,5 +175,3 @@ class ViewSudoku:
             for column_value in range(column_min, column_max + 1):
                 if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
                     print("samassa ruudukossa virhe")
-
-#view_sudoku = ViewSudoku(id)

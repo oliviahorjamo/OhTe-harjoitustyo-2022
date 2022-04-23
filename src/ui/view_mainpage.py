@@ -16,9 +16,6 @@ class Mainpage:
         self.sudoku_links = pygame.sprite.Group()
         self.initialize_sprites()
 
-    def start_mainpage(self):
-        pass
-
     def draw_text(self, display):
         font = pygame.font.SysFont("Arial", 20)
         text = font.render("SUDOKU MAINPAGE", False, (0, 0, 0))

@@ -3,28 +3,38 @@ from ui.clock import Clock
 from ui.renderer import Renderer
 from ui.view_mainpage import mainpage
 from ui.view_sudoku import ViewSudoku
+from ui.view_login import login_view
 
 class GameLoop:
 
     def __init__(self):
         self.mainpage = mainpage
+        self.login_view = login_view
         #self.view_sudoku = view_sudoku
         self.clock = Clock()
+        self.show_login = False
+        self.show_sudoku = False
+        self.show_mainpage = False
         self._cell_size = 33
+        self.write_username = False
 
     def start(self):
-        self._renderer = Renderer(self.mainpage.display)
+        self.show_login = True
+        #self._renderer = Renderer(self.mainpage.display)
+        self._renderer = Renderer(display = self.login_view.display, login_view=self.login_view)
         while True:
             if self._handle_events() == False:
                 break
 
             #current_time = self.clock.get_ticks()
             #self.view_sudoku.update(current_time)
-            self._render_mainpage()
+            #self._render_login_page()
+            self._render_login_page()
             self.clock.tick(60)
 
     def start_sudoku_view(self):
-        self._renderer = Renderer(self.view_sudoku.display, self.view_sudoku)
+        self.show_sudoku = True
+        self._renderer = Renderer(self.view_sudoku.display, view_sudoku = self.view_sudoku)
         while True:
             if self._handle_events() == False:
                 break
@@ -36,6 +46,14 @@ class GameLoop:
 
             self.clock.tick(60)
         
+    def start_mainpage(self):
+        self.show_mainpage = True
+        self._renderer = Renderer(display = self.mainpage.display, mainpage = self.mainpage)
+        while True:
+            if self._handle_events() == False:
+                break
+            self._render_mainpage()
+            self.clock.tick(60)
 
 
     def _handle_events(self):
@@ -46,15 +64,40 @@ class GameLoop:
                 #hiirellä klikkaaminen asettaa start gamen trueksi
                 #sit näytetään kyseinen sudoku
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.show_mainpage == True:
                 if pygame.mouse.get_pressed():
                     show_sudoku_id = self.mainpage.select_sudoku(pygame.mouse.get_pos())
                     if show_sudoku_id != None:
                         self.show_sudoku = True
+                        self.show_mainpage = False
                         self.view_sudoku = ViewSudoku(show_sudoku_id)
                         self.start_sudoku_view()
 
-            if event.type == pygame.KEYDOWN:
+            if self.show_login == True and event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed():
+                    if self.login_view.username_field_collide(pygame.mouse.get_pos()):
+                        self.write_username = True
+                    else:
+                        self.write_username = False
+                    if self.login_view.password_field_collide(pygame.mouse.get_pos()):
+                        self.write_password = True
+                    else:
+                        self.write_password = False
+                    if self.login_view.login_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
+                        self.login = True
+                        self.show_login = False
+                        #kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
+                        self.start_mainpage()
+
+                    if self.login_view.create_user_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
+                        self.create_user = True
+                        self.show_login = False
+                        #kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
+                        self.start_mainpage()
+
+
+
+            if event.type == pygame.KEYDOWN and self.show_sudoku == True:
 
                 if event.key == pygame.K_LEFT:
                     self.view_sudoku.move(dx=- self._cell_size)
@@ -87,7 +130,19 @@ class GameLoop:
                 if event.key == pygame.K_DELETE:
                     self.view_sudoku.delete_number()
 
-            elif event.type == pygame.QUIT:
+            if event.type == pygame.KEYDOWN and self.show_login == True:
+                if self.write_username == True:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.login_view.username = self.login_view.username[:-1]
+                    else:
+                        self.login_view.username += event.unicode
+                if self.write_password == True:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.login_view.password = self.login_view.password[:-1]
+                    else:
+                        self.login_view.password += event.unicode
+
+            if event.type == pygame.QUIT:
                 return False
 
     def _render_mainpage(self):
@@ -95,3 +150,6 @@ class GameLoop:
 
     def _render_sudoku(self):
         self._renderer.render_sudoku()
+
+    def _render_login_page(self):
+        self._renderer.render_login_view()

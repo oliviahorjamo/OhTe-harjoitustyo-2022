@@ -10,4 +10,5 @@
 |8.4.   |  2   |Numeroiden lisääminen|
 |11.4.  |  5   |Sovelluslogiikan parantaminen ja lisää unittestejä|
 |20.4.  |  5   |Koodin refaktorointia, repositorio alkuperäisille sudokuille ja etusivun aloittaminen|
-|yht    |  18  |
+|23.4.  |  4   |Sisäänkirjautumissivun ja käyttäjärepositorion luominen|
+|yht    |  22  |

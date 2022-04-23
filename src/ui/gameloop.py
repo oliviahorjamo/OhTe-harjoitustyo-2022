@@ -4,6 +4,7 @@ from ui.renderer import Renderer
 from ui.view_mainpage import mainpage
 from ui.view_sudoku import ViewSudoku
 from ui.view_login import login_view
+from services.sudoku_service import InvalidCredentialsError, UsernameExistsError, sudoku_service
 
 class GameLoop:
 
@@ -84,16 +85,22 @@ class GameLoop:
                     else:
                         self.write_password = False
                     if self.login_view.login_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
-                        self.login = True
-                        self.show_login = False
+                        try:
+                            sudoku_service.login(username = self.login_view.username, password = self.login_view.password)
+                            self.show_login = False
+                            self.start_mainpage()
+                        except InvalidCredentialsError:
+                            print("väärä käyttäjänimi tai salasana")
+
                         #kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
-                        self.start_mainpage()
 
                     if self.login_view.create_user_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
-                        self.create_user = True
-                        self.show_login = False
-                        #kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
-                        self.start_mainpage()
+                        try:
+                            sudoku_service.create_user(username = self.login_view.username, password = self.login_view.password)
+                            self.show_login = False
+                            self.start_mainpage()
+                        except UsernameExistsError:
+                            print("tällä käyttäjänimellä on jo käyttäjä")
 
 
 

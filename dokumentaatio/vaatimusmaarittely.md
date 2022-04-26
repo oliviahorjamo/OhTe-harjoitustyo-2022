@@ -18,11 +18,6 @@ Sovellukseen täytyy ensin joko kirjautua sisään tai luoda uusi käyttäjä. T
 - Kirjautunut käyttäjä voi tallentaa keskeneräisen ratkaisunsa.
 - Käyttäjä voi kirjautua ulos.
 
-## Sovelluksen tila 26.4.
-- Sovellukseen voi kirjautua sisään ja sovelluksessa voi pelata sudokuja.
-- Sovelluksen koodi kaipaa reilusti refaktorointia.
-- Sovelluksen ulkoasu kaipaa hienosäätöä ja esim. virhetilanteesta ei vielä ilmoiteta käyttöliittymässä mitenkään.
-
 ## Jatkokehitysideoita
 
 - Käyttäjä voi tarkastaa tähän mennessä luomansa ratkaisun oikeellisuuden, jolloin järjestelmä herjaa, jos käyttäjä on lisännyt sudokun sääntöjen vastaisesti numeroita. Järjestelmä ei herjaa väärässä paikassa olevia numeroita, jotka eivät ole sääntöjen vastaisia.

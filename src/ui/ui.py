@@ -9,20 +9,20 @@ from entities.sudoku import OriginalSudoku, Sudoku
 from services.sudoku_service import sudoku_service
 import ui.sprites
 
+
 class UI:
 
     def __init__(self):
         #self.mainpage = mainpage
         #self.view_sudoku = view_sudoku
         self.gameloop = GameLoop()
-        
+
         self.start()
-        #self.start_sudoku_view()
+        # self.start_sudoku_view()
 
     def start(self):
         self.gameloop.start()
-        #self.gameloop.start_mainpage()
+        # self.gameloop.start_mainpage()
 
     def start_sudoku_view(self):
         self.gameloop.start_sudoku_view()
-

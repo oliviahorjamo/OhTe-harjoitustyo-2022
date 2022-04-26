@@ -3,6 +3,7 @@ import unittest
 from repositories.user_repository import user_repository
 from entities.user import User
 
+
 class TestUserRepository(unittest.TestCase):
     def setUp(self):
         user_repository.delete_all()
@@ -27,4 +28,3 @@ class TestUserRepository(unittest.TestCase):
         user_repository.create(self.user_testi1)
         user = user_repository.find_by_username(self.user_testi1.username)
         self.assertEqual(user.username, self.user_testi1.username)
-        

@@ -6,6 +6,7 @@ import os
 from services.sudoku_service import sudoku_service
 from ui import sprites
 
+
 class Mainpage:
     def __init__(self):
         pygame.font.init()
@@ -20,7 +21,8 @@ class Mainpage:
         font = pygame.font.SysFont("Arial", 20)
         text = font.render("SUDOKU MAINPAGE", False, (0, 0, 0))
         display.blit(text, (20, 20))
-        text = font.render("Valitse sudoku, jota haluat pelata", False, (0,0,0))
+        text = font.render(
+            "Valitse sudoku, jota haluat pelata", False, (0, 0, 0))
         display.blit(text, (20, 45))
 
     def draw_sudoku_list(self, display):
@@ -32,15 +34,18 @@ class Mainpage:
         i = 0
         for sudoku in self.sudokus:
             i += 1
-            self.sudoku_links.add(sprites.SudokuLink(sudoku.id, self.display.get_width() / 4, self.display.get_height() / 4 + 20*i))
+            self.sudoku_links.add(sprites.SudokuLink(
+                sudoku.id, self.display.get_width() / 4, self.display.get_height() / 4 + 20*i))
 
     def select_sudoku(self, mouse):
         for sudoku in self.sudoku_links:
             if sudoku.rect.collidepoint(mouse):
                 return sudoku.id
 
+
 class SudokuList:
     def __init__(self):
         pass
+
 
 mainpage = Mainpage()

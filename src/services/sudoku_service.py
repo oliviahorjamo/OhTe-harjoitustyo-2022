@@ -6,12 +6,14 @@ from repositories.user_repository import user_repository
 #from entities.sudoku import OriginalSudoku, Sudoku
 from entities.user import User
 
+
 class InvalidCredentialsError(Exception):
     pass
 
 
 class UsernameExistsError(Exception):
     pass
+
 
 class SudokuService:
 

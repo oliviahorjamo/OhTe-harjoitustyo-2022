@@ -19,7 +19,7 @@ class ViewSudoku:
         self.originals = original_sudoku.grid
         self.sudoku = sudoku
         self.cell_size = 33
-        
+
         #display_height = len(self.grid)* self.cell_size
         #display_width = len(self.grid) * self.cell_size
         #self.display = pygame.display.set_mode((display_width, display_height))
@@ -40,12 +40,13 @@ class ViewSudoku:
 
     def draw_original_numbers(self, display):
         for sprite in self.original_numbers:
-                display.blit(
+            display.blit(
                 sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
     def draw_added_numbers(self, display):
         for sprite in self.added_numbers:
-            display.blit(sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
+            display.blit(sprite.text, (sprite.rect.x +
+                         self.cell_size / 4, sprite.rect.y))
 
     def draw_lines(self, display):
         for i in range(len(self.grid) + 1):
@@ -58,8 +59,6 @@ class ViewSudoku:
     def draw_selected_square(self):
         pygame.draw.rect(self.selected_square.image,
                          self.selected_square.color, self.selected_square.rect, 7)
-
-
 
     def draw_unvalid():
         # korostaa punaisella epävalidin vastauksen syyn

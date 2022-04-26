@@ -6,7 +6,6 @@ from entities.sudoku import OriginalSudoku, Sudoku
 
 
 class OriginalSudokuRepository:
-    # lukee alkuperäset sudokut jotka lisätään käsin
     def __init__(self, file_path):
         self.file_path = file_path
 
@@ -29,7 +28,7 @@ class OriginalSudokuRepository:
             for row in file:
                 row = row.replace("\n", "")
                 parts = row.split(";")
-                id = int(parts[0])
+                sudoku_id = int(parts[0])
                 grid = []
                 for i in range(1, len(parts)):
                     elements = parts[i].split(",")
@@ -37,7 +36,7 @@ class OriginalSudokuRepository:
                     for element in elements:
                         row.append(int(element))
                     grid.append(row)
-                original_sudokus.append(OriginalSudoku(id = id, grid = grid))
+                original_sudokus.append(OriginalSudoku(id=sudoku_id, grid=grid))
         return original_sudokus
 
     def delete_all(self):
@@ -48,7 +47,7 @@ class OriginalSudokuRepository:
             for original_sudoku in originals:
                 row = f"""{original_sudoku.id};{str(original_sudoku.grid[0])[1:-1]};{str(original_sudoku.grid[1])[1:-1]};{str(original_sudoku.grid[2])[1:-1]};{str(original_sudoku.grid[3])[1:-1]};{str(original_sudoku.grid[4])[1:-1]};{str(original_sudoku.grid[5])[1:-1]};{str(original_sudoku.grid[6])[1:-1]};{str(original_sudoku.grid[7])[1:-1]};{str(original_sudoku.grid[8])[1:-1]}"""
                 file.write(row+"\n")
-                    
+
     def create(self, original_sudoku):
         originals = self.find_all()
         originals.append(original_sudoku)
@@ -57,10 +56,9 @@ class OriginalSudokuRepository:
 
 
 class SudokuRepository:
-    # lukee käyttäjän id:n ja alkuperäsen sudokun id:n mukaan käyttäjän keskeneräisiä sudokuja
-    # tallentaa keskeneräisiä sudokuja
     def __init__(self, file_path):
         self.file_path = file_path
+
 
 sudoku_repository = SudokuRepository(SUDOKUS_FILE_PATH)
 original_sudokus_repository = OriginalSudokuRepository(ORIGINALS_FILE_PATH)

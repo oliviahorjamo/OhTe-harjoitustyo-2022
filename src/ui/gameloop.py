@@ -6,6 +6,7 @@ from ui.view_sudoku import ViewSudoku
 from ui.view_login import login_view
 from services.sudoku_service import InvalidCredentialsError, UsernameExistsError, sudoku_service
 
+
 class GameLoop:
 
     def __init__(self):
@@ -22,20 +23,22 @@ class GameLoop:
     def start(self):
         self.show_login = True
         #self._renderer = Renderer(self.mainpage.display)
-        self._renderer = Renderer(display = self.login_view.display, login_view=self.login_view)
+        self._renderer = Renderer(
+            display=self.login_view.display, login_view=self.login_view)
         while True:
             if self._handle_events() == False:
                 break
 
             #current_time = self.clock.get_ticks()
-            #self.view_sudoku.update(current_time)
-            #self._render_login_page()
+            # self.view_sudoku.update(current_time)
+            # self._render_login_page()
             self._render_login_page()
             self.clock.tick(60)
 
     def start_sudoku_view(self):
         self.show_sudoku = True
-        self._renderer = Renderer(self.view_sudoku.display, view_sudoku = self.view_sudoku)
+        self._renderer = Renderer(
+            self.view_sudoku.display, view_sudoku=self.view_sudoku)
         while True:
             if self._handle_events() == False:
                 break
@@ -46,28 +49,29 @@ class GameLoop:
                 break
 
             self.clock.tick(60)
-        
+
     def start_mainpage(self):
         self.show_mainpage = True
-        self._renderer = Renderer(display = self.mainpage.display, mainpage = self.mainpage)
+        self._renderer = Renderer(
+            display=self.mainpage.display, mainpage=self.mainpage)
         while True:
             if self._handle_events() == False:
                 break
             self._render_mainpage()
             self.clock.tick(60)
 
-
     def _handle_events(self):
         for event in pygame.event.get():
 
-                #TODO lisää tähän kans hiiren käsittelyt jotta
-                #saadaan siirtymät mainpagelta eteenpäin
-                #hiirellä klikkaaminen asettaa start gamen trueksi
-                #sit näytetään kyseinen sudoku
+            # TODO lisää tähän kans hiiren käsittelyt jotta
+            # saadaan siirtymät mainpagelta eteenpäin
+            # hiirellä klikkaaminen asettaa start gamen trueksi
+            # sit näytetään kyseinen sudoku
 
             if event.type == pygame.MOUSEBUTTONDOWN and self.show_mainpage == True:
                 if pygame.mouse.get_pressed():
-                    show_sudoku_id = self.mainpage.select_sudoku(pygame.mouse.get_pos())
+                    show_sudoku_id = self.mainpage.select_sudoku(
+                        pygame.mouse.get_pos())
                     if show_sudoku_id != None:
                         self.show_sudoku = True
                         self.show_mainpage = False
@@ -86,23 +90,23 @@ class GameLoop:
                         self.write_password = False
                     if self.login_view.login_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
                         try:
-                            sudoku_service.login(username = self.login_view.username, password = self.login_view.password)
+                            sudoku_service.login(
+                                username=self.login_view.username, password=self.login_view.password)
                             self.show_login = False
                             self.start_mainpage()
                         except InvalidCredentialsError:
                             print("väärä käyttäjänimi tai salasana")
 
-                        #kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
+                        # kutsu sudoku servicen login toimintoja jotka kutsuu repositoriota
 
                     if self.login_view.create_user_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
                         try:
-                            sudoku_service.create_user(username = self.login_view.username, password = self.login_view.password)
+                            sudoku_service.create_user(
+                                username=self.login_view.username, password=self.login_view.password)
                             self.show_login = False
                             self.start_mainpage()
                         except UsernameExistsError:
                             print("tällä käyttäjänimellä on jo käyttäjä")
-
-
 
             if event.type == pygame.KEYDOWN and self.show_sudoku == True:
 

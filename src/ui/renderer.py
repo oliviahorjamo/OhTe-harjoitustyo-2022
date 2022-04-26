@@ -3,8 +3,9 @@ import pygame
 #from ui.view_mainpage import mainpage
 #from ui.view_login import login_view
 
+
 class Renderer:
-    def __init__(self, display, view_sudoku = None, mainpage = None, login_view = None):
+    def __init__(self, display, view_sudoku=None, mainpage=None, login_view=None):
         self._display = display
         self.mainpage = mainpage
         self.login_view = login_view
@@ -22,8 +23,8 @@ class Renderer:
         pygame.display.update()
 
     def render_mainpage(self):
-        #olisko kaikki piirtämiset parempi tehä gameloopissa?
-        self._display.fill((255,255,255))
+        # olisko kaikki piirtämiset parempi tehä gameloopissa?
+        self._display.fill((255, 255, 255))
         self.mainpage.draw_text(self._display)
         self.mainpage.draw_sudoku_list(self._display)
         #print("ollaan mainpagen renderöinnissiä")

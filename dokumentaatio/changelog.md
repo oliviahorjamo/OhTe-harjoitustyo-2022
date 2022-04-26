@@ -9,3 +9,11 @@
 - Käyttäjä voi lisätä numeroita default -sudokuun
 - Käyttäjä voi poistaa lisäämiään numeroita default -sudokusta
 - Testattu, että lisääminen ja poistaminen toimii oikein
+
+## Viikko 5
+- Käyttäjä voi luoda uuden käyttäjätunnuksen.
+- Käyttäjä voi kirjautua sisään olemassa olevalla käyttäjätunnuksella.
+- Etusivulla listataan kaikki sovelluksesta löytyvät sudokut.
+- Käyttäjä voi avata sudokun klikkaamalla sitä listassa.
+- Sudokut haetaan repositoriosta eikä käytetä enää default -sudokua.
+- Testattu, että repositoriot toimivat oikein.

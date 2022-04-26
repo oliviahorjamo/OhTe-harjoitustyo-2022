@@ -34,3 +34,19 @@ poetry run invoke coverage-report
 ```
 
 Raportti luodaan _htmlcov_-hakemistoon.
+
+### Pylint -raportin luominen
+
+Pylint -raportin voi luoda komennolla:
+
+```bash
+poetry run invoke lint
+```
+
+### Pylint virheiden korjaaminen
+
+Koodin voi formatoida pylint -ohjeiden mukaiseksi komennolla:
+
+```bash
+poetry run invoke format
+```

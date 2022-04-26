@@ -46,13 +46,14 @@ class OriginalSudokuRepository:
     def _write(self, originals):
         with open(self.file_path, "w", encoding="utf-8") as file:
             for original_sudoku in originals:
-                row = f"""{original_sudoku.id};{original_sudoku.grid[0]};{original_sudoku.grid[1]};
-                {original_sudoku.grid[2]};{original_sudoku.grid[3]};{original_sudoku.grid[4]};
-                {original_sudoku.grid[5]};{original_sudoku.grid[6]};{original_sudoku.grid[7]};
-                {original_sudoku.grid[8]};"""
+                row = f"""{original_sudoku.id};{str(original_sudoku.grid[0])[1:-1]};{str(original_sudoku.grid[1])[1:-1]};{str(original_sudoku.grid[2])[1:-1]};{str(original_sudoku.grid[3])[1:-1]};{str(original_sudoku.grid[4])[1:-1]};{str(original_sudoku.grid[5])[1:-1]};{str(original_sudoku.grid[6])[1:-1]};{str(original_sudoku.grid[7])[1:-1]};{str(original_sudoku.grid[8])[1:-1]}"""
                 file.write(row+"\n")
                     
-                
+    def create(self, original_sudoku):
+        originals = self.find_all()
+        originals.append(original_sudoku)
+        self._write(originals)
+        return original_sudoku
 
 
 class SudokuRepository:

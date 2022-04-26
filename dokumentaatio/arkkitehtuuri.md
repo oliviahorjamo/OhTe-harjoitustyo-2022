@@ -51,13 +51,12 @@ sequenceDiagram
   participant SudokuService
   participant UserRepository
   participant Mainpage
-  participant masa
   User->>LoginView: click "Create user" button
-  LoginView->>SudokuService: create_user("masa", "masa123")
-  SudokuService->>UserRepository: find_by_username("masa")
+  LoginView->>SudokuService: create_user("olivia", "olivia123")
+  SudokuService->>UserRepository: find_by_username("olivia")
   UserRepository-->>SudokuService: None
-  SudokuService->>masa: User("masa", "masa123")
-  SudokuService->>UserRepository: create(masa)
+  SudokuService->>masa: User("olivia", "olivia123")
+  SudokuService->>UserRepository: create(olivia)
   UserRepository-->>SudokuService: user
   LoginView -->> Mainpage: start()
 ```

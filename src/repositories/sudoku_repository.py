@@ -1,16 +1,17 @@
 # Tästä tulee repositoriot alkuperäisten sudokujen lisäämiselle ja muokatuille sudokuille
 
-import os
+from pathlib import Path
 from config import ORIGINALS_FILE_PATH, SUDOKUS_FILE_PATH
 from entities.sudoku import OriginalSudoku, Sudoku
-
-dirname = os.path.dirname(__file__)
 
 
 class OriginalSudokuRepository:
     # lukee alkuperäset sudokut jotka lisätään käsin
     def __init__(self, file_path):
         self.file_path = file_path
+
+    def ensure_file_exists(self):
+        Path(self.file_path).touch()
 
     def find_all(self):
         return self.read()
@@ -38,6 +39,20 @@ class OriginalSudokuRepository:
                     grid.append(row)
                 original_sudokus.append(OriginalSudoku(id = id, grid = grid))
         return original_sudokus
+
+    def delete_all(self):
+        self._write([])
+
+    def _write(self, originals):
+        with open(self.file_path, "w", encoding="utf-8") as file:
+            for original_sudoku in originals:
+                row = f"""{original_sudoku.id};{original_sudoku.grid[0]};{original_sudoku.grid[1]};
+                {original_sudoku.grid[2]};{original_sudoku.grid[3]};{original_sudoku.grid[4]};
+                {original_sudoku.grid[5]};{original_sudoku.grid[6]};{original_sudoku.grid[7]};
+                {original_sudoku.grid[8]};"""
+                file.write(row+"\n")
+                    
+                
 
 
 class SudokuRepository:

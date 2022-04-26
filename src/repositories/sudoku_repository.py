@@ -1,6 +1,7 @@
 # Tästä tulee repositoriot alkuperäisten sudokujen lisäämiselle ja muokatuille sudokuille
 
 import os
+from config import ORIGINALS_FILE_PATH, SUDOKUS_FILE_PATH
 from entities.sudoku import OriginalSudoku, Sudoku
 
 dirname = os.path.dirname(__file__)
@@ -45,5 +46,5 @@ class SudokuRepository:
     def __init__(self, file_path):
         self.file_path = file_path
 
-original_sudokus_repository = OriginalSudokuRepository(os.path.join(dirname, "..", "data", "originals.csv"))
-sudoku_repository = SudokuRepository(os.path.join(dirname, "..", "data", "sudokus.csv"))
+sudoku_repository = SudokuRepository(SUDOKUS_FILE_PATH)
+original_sudokus_repository = OriginalSudokuRepository(ORIGINALS_FILE_PATH)

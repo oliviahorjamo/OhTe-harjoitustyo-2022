@@ -11,6 +11,12 @@ Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus.
 
 ## Komentorivitoiminnot
 
+## Tietokannan alustaminen
+Ohjelman käyttämän tietokannan voi alustaa komennolla
+```bash
+poetry run invoke build
+```
+
 ### Ohjelman suorittaminen
 Ohjelman voi suorittaa komennolla
 

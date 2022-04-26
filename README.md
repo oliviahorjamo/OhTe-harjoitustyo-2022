@@ -11,7 +11,13 @@ Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus.
 
 ## Komentorivitoiminnot
 
-## Tietokannan alustaminen
+### Riippuvuksien asentaminen
+Sovelluksen käyttämät riippuvuudet voi asentaa komennolla
+```bash
+poetry install
+```
+
+### Tietokannan alustaminen
 Ohjelman käyttämän tietokannan voi alustaa komennolla
 ```bash
 poetry run invoke build

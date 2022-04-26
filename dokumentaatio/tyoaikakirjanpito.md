@@ -11,4 +11,5 @@
 |11.4.  |  5   |Sovelluslogiikan parantaminen ja lisää unittestejä|
 |20.4.  |  5   |Koodin refaktorointia, repositorio alkuperäisille sudokuille ja etusivun aloittaminen|
 |23.4.  |  4   |Sisäänkirjautumissivun ja käyttäjärepositorion luominen|
-|yht    |  22  |
+|26.4.  |  3   |Konfiguraatiot ja lisää unittestejä|
+|yht    |  25  |

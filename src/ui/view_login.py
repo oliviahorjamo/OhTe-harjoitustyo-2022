@@ -30,7 +30,7 @@ class LoginView:
     def draw_login_view(self):
         self.draw_login_fields()
         self.draw_login_button()
-        self.draw_create_user_button
+        self.draw_create_user_button()
 
     def draw_login_fields(self):
         pygame.draw.rect(self.display, (0, 0, 0), self.username_field.rect, 3)

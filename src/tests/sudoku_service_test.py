@@ -39,6 +39,7 @@ class TestSudoku(unittest.TestCase):
     def login_user(self, user):
         self.sudoku_service.create_user(self.user.username, self.user.password)
 
+    #TODO selvitä miksi testit ei toimi niinkuin tarkoitettu
    # def test_login_with_valid_username_and_password(self):
     #    self.sudoku_service.create_user(
      #   self.user_testi1.username,

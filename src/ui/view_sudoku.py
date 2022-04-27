@@ -19,12 +19,7 @@ class ViewSudoku:
         self.originals = original_sudoku.grid
         self.sudoku = sudoku
         self.cell_size = 33
-
-        #display_height = len(self.grid)* self.cell_size
-        #display_width = len(self.grid) * self.cell_size
-        #self.display = pygame.display.set_mode((display_width, display_height))
         self.display = pygame.display.set_mode((500, 500))
-
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
         self.added_numbers = pygame.sprite.Group()
@@ -34,9 +29,11 @@ class ViewSudoku:
 
         self._initialize_sprites(self.grid, self.originals)
 
-    def get_coordinate():
-        # palauttaa hiiren kohdalla olevan koordinaatin
-        pass
+    def draw_sudoku(self, display):
+        self.draw_added_numbers(display)
+        self.draw_lines(display)
+        self.draw_original_numbers(display)
+        self.draw_selected_square()
 
     def draw_original_numbers(self, display):
         for sprite in self.original_numbers:
@@ -135,9 +132,9 @@ class ViewSudoku:
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
 
-            self.check_column(row=row, column=column, number=number)
-            self.check_row(column=column, row=row, number=number)
-            self.check_small_grid(row=row, column=column, number=number)
+            #self.check_column(row=row, column=column, number=number)
+            #self.check_row(column=column, row=row, number=number)
+            #self.check_small_grid(row=row, column=column, number=number)
 
     def delete_number(self):
         column, row = self.get_normalized_coordinates()

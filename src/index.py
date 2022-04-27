@@ -1,10 +1,10 @@
 # Tää tiedosto pyörittää aluksi koko hommaa / starttaa sovelluksen
 
-from ui.ui import UI
+from ui.ui import ui
 
 
 def main():
-    UI()
+    ui.start()
 
 
 if __name__ == "__main__":

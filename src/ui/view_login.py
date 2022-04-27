@@ -13,6 +13,7 @@ class LoginView:
         self.display = pygame.display.set_mode((display_width, display_height))
         self.username = ""
         self.password = ""
+        self.all_sprites = pygame.sprite.Group()
         self._initialize_sprites()
 
     def _initialize_sprites(self):
@@ -24,11 +25,16 @@ class LoginView:
             text="Log in", x=self.display.get_width() / 4, y=150)
         self.create_user_button = Button(
             text="Create user", x=self.display.get_width() / 4, y=200)
+        self.all_sprites.add(self.username_field, self.password_field, self.login_button, self.create_user_button)
+
+    def draw_login_view(self):
+        self.draw_login_fields()
+        self.draw_login_button()
+        self.draw_create_user_button
 
     def draw_login_fields(self):
         pygame.draw.rect(self.display, (0, 0, 0), self.username_field.rect, 3)
         pygame.draw.rect(self.display, (0, 0, 0), self.password_field.rect, 3)
-        #self.font = pygame.font.SysFont("Arial", 20)
         self.username_text = self.username_field.font.render(
             "Käyttäjänimi", 1, (0, 0, 0))
         self.display.blit(
@@ -69,11 +75,6 @@ class LoginView:
     def create_user_button_collide(self, mouse):
         if self.create_user_button.rect.collidepoint(mouse):
             return True
-
-
-class CreateUserView:
-    def __init__(self):
-        pass
 
 
 login_view = LoginView()

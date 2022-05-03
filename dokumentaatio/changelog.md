@@ -17,3 +17,7 @@
 - Käyttäjä voi avata sudokun klikkaamalla sitä listassa.
 - Sudokut haetaan repositoriosta eikä käytetä enää default -sudokua.
 - Testattu, että repositoriot toimivat oikein.
+
+## Viikko 6
+- Käyttäjän keskeneräinen ratkaisu tallennetaan automaattisesti jokaisen muutoksen jälkeen.
+- Käyttäjän keskeneräinen ratkaisu haetaan automaattisesti pelinäkymään käyttäjän alkaessa pelata uudestaan.

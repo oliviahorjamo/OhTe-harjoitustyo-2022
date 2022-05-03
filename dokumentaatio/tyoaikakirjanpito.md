@@ -12,4 +12,5 @@
 |20.4.  |  5   |Koodin refaktorointia, repositorio alkuperäisille sudokuille ja etusivun aloittaminen|
 |23.4.  |  4   |Sisäänkirjautumissivun ja käyttäjärepositorion luominen|
 |26.4.  |  3   |Konfiguraatiot ja lisää unittestejä|
-|yht    |  25  |
+|3.5.   |  5   |Käyttäjän keskeneräisen ratkaisun tallentaminen ja hakeminen repositoriosta, koodin refaktorointia ja parantelua koodikatselmuksen palautteen mukaisesti.
+|yht    |  30  |

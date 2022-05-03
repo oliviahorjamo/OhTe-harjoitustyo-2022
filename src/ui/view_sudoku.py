@@ -13,11 +13,14 @@ class ViewSudoku:
         pygame.font.init()
 
         original_sudoku = sudoku_service.find_original_numbers(id)
-        sudoku = Sudoku(original_sudoku)
+        user_sudoku = sudoku_service.find_added_numbers(id)
+        if user_sudoku.user == None:
+            user_sudoku.user = sudoku_service._user.username
+        print("user sudoku name", user_sudoku.user)
         self.sprites = ui.sprites
-        self.grid = sudoku.grid
+        self.grid = user_sudoku.grid
         self.originals = original_sudoku.grid
-        self.sudoku = sudoku
+        self.user_sudoku = user_sudoku
         self.cell_size = 33
         self.display = pygame.display.set_mode((500, 500))
         self.empty_squares = pygame.sprite.Group()
@@ -124,7 +127,7 @@ class ViewSudoku:
 
     def add_number(self, number):
         column, row = self.get_normalized_coordinates()
-        if sudoku_service.add_number(self.originals, self.sudoku, row, column, number):
+        if sudoku_service.add_number(self.originals, self.user_sudoku, row, column, number):
             x, y = self.get_coordinates()
 
             for sprite in self.collide_empty_squares():
@@ -132,13 +135,15 @@ class ViewSudoku:
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
 
+            sudoku_service.add_number(row = row, column = column, number = number, originals=self.original_numbers, sudoku = self.user_sudoku)
+
             #self.check_column(row=row, column=column, number=number)
             #self.check_row(column=column, row=row, number=number)
             #self.check_small_grid(row=row, column=column, number=number)
 
     def delete_number(self):
         column, row = self.get_normalized_coordinates()
-        if sudoku_service.delete_number(self.originals, self.sudoku, row, column):
+        if sudoku_service.delete_number(self.originals, self.user_sudoku, row, column):
             # testaus ettei numero oo alkuperäinen eli voi poistaa
             for sprite in self.collide_added_numbers():
                 sprite.kill()

@@ -21,6 +21,7 @@ class SudokuService:
         self._user = None
         self._user_repository = user_repository
         self.original_sudokus_repository = original_sudokus_repository
+        self.sudoku_repository = sudoku_repository
 
     def login(self, username, password):
         user = self._user_repository.find_by_username(username)
@@ -41,15 +42,22 @@ class SudokuService:
     def find_original_numbers(self, original_numbers_id):
         return self.original_sudokus_repository.find_by_id(original_numbers_id)
 
+    def find_added_numbers(self, original_numbers_id):
+        return self.sudoku_repository.find_by_id_and_user(original_numbers_id, self._user.username)
+
     def add_number(self, originals, sudoku, row, column, number):
         if self.test_square_empty(originals, sudoku, row, column):
             sudoku.grid[row][column] = number
+            self.sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id, user_name=self._user.username)
+            self.sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
 
     def delete_number(self, originals, sudoku, row, column):
         if self.test_can_delete(originals, row, column):
             sudoku.grid[row][column] = 0
+            self.sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id, user_name=self._user.username)
+            self.sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
 

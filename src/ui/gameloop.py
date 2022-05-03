@@ -49,6 +49,9 @@ class GameLoop:
                     self.view_sudoku = ViewSudoku(show_sudoku_id)
                     self._renderer.current_view = self.view_sudoku
 
+            if event.type == pygame.QUIT:
+                return False
+
     def _handle_events_login(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -91,6 +94,9 @@ class GameLoop:
                         self.login_view.password = self.login_view.password[:-1]
                     else:
                         self.login_view.password += event.unicode
+
+            if event.type == pygame.QUIT:
+                return False
 
     def _handle_events_sudoku(self):
         for event in pygame.event.get():

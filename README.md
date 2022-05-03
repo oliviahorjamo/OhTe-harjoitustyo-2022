@@ -8,6 +8,7 @@ Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus.
 - [Työaikakirjanpito](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/tyoaikakirjanpito.md)
 - [Changelog](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/changelog.md)
 - [Arkkitehtuuri](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/arkkitehtuuri.md)
+- [Käyttöohhe](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/kayttoohje.md)
 
 ## Komentorivitoiminnot
 

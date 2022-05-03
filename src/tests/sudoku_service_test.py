@@ -1,7 +1,5 @@
 # sisältää sudokun pelilogiikan testit
 import unittest
-import sys
-import os
 from services.sudoku_service import SudokuService, InvalidCredentialsError, UsernameExistsError
 from entities.sudoku import Sudoku, OriginalSudoku
 from entities.user import User
@@ -39,7 +37,7 @@ class TestSudoku(unittest.TestCase):
     def login_user(self, user):
         self.sudoku_service.create_user(self.user.username, self.user.password)
 
-    #TODO selvitä miksi testit ei toimi niinkuin tarkoitettu
+    # TODO selvitä miksi testit ei toimi niinkuin tarkoitettu
    # def test_login_with_valid_username_and_password(self):
     #    self.sudoku_service.create_user(
      #   self.user_testi1.username,

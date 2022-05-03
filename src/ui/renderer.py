@@ -4,8 +4,9 @@ from ui.view_mainpage import Mainpage
 from ui.view_sudoku import ViewSudoku
 from ui import ui
 
+
 class Renderer:
-    def __init__(self, display, current_view = None):
+    def __init__(self, display, current_view=None):
         self._display = display
         self.current_view = current_view
 

@@ -26,7 +26,7 @@ class Sudoku:
         grid: ruudukko, joka sisältää käyttäjän lisäämät numerot (alussa tyhjä)
     """
 
-    def __init__(self, original_sudoku_id, grid = None, user = None):
+    def __init__(self, original_sudoku_id, grid=None, user=None):
         """Luokan konstruktori, joka luo uuden tyhjän sudokupohjan.
 
         Args:
@@ -35,8 +35,7 @@ class Sudoku:
         """
 
         self.original_sudoku_id = original_sudoku_id
-        #self.original_sudoku = original_sudoku
-        if grid == None:
+        if grid is None:
             self.grid = [
                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0],

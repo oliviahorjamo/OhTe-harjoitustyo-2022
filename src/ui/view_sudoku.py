@@ -7,48 +7,74 @@ import ui.sprites
 
 
 class ViewSudoku:
+    """Sudokun näyttämisestä vastaava näkymä
+    """
 
-    def __init__(self, id):
+    def __init__(self, original_sudoku_id):
+        """Luokan konstruktori, joka luo uuden Sudoku -olion.
 
+        Args:
+            original_sudoku_id: Käyttäjän käyttöliittymässä klikkaaman
+            sudokun id, jonka avulla haetaan sudokuun liitetyt alkuperäiset
+            numerot ja käyttäjän mahdollisesti aiemmin luoma ratkaisu.
+        """
         pygame.font.init()
 
-        original_sudoku = sudoku_service.find_original_numbers(id)
-        user_sudoku = sudoku_service.find_added_numbers(id)
-        if user_sudoku.user == None:
-            user_sudoku.user = sudoku_service._user.username
-        print("user sudoku name", user_sudoku.user)
+        self.original_sudoku = sudoku_service.find_original_numbers(original_sudoku_id)
+        self.user_sudoku = sudoku_service.find_added_numbers(original_sudoku_id)
+        if self.user_sudoku.user == None:
+            self.user_sudoku.user = sudoku_service._user.username
         self.sprites = ui.sprites
-        self.grid = user_sudoku.grid
-        self.originals = original_sudoku.grid
-        self.user_sudoku = user_sudoku
+        self.grid = self.user_sudoku.grid
+        self.originals = self.original_sudoku.grid
+
         self.cell_size = 33
-        self.display = pygame.display.set_mode((500, 500))
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
         self.added_numbers = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-
         self.selected_square = self.sprites.SelectedSquare(self.cell_size)
 
-        self._initialize_sprites(self.grid, self.originals)
+        self._initialize_sprites()
 
     def draw_sudoku(self, display):
+        """Piirtää ne osat nykyisestä sudokusta näytölle, jotka vaativat tekstin tmv.
+        piirtämistä näytölle eli joiden piirtäminen ei onnistu all_sprites.draw(display) -käskyllä.
+
+        Args:
+            display: Näyttö, jolle piirretään
+        """
         self.draw_added_numbers(display)
         self.draw_lines(display)
         self.draw_original_numbers(display)
         self.draw_selected_square()
 
     def draw_original_numbers(self, display):
+        """Piirtää näytölle sudokuun liitetyt alkuperäiset numerot.
+
+        Args:
+            display: Näyttö, jolle piirretään.
+        """
         for sprite in self.original_numbers:
             display.blit(
                 sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
     def draw_added_numbers(self, display):
+        """Piirtää näytölle käyttäjän lisäämät numerot.
+
+        Args:
+            display: Näyttö, jolle piirretään.
+        """
         for sprite in self.added_numbers:
             display.blit(sprite.text, (sprite.rect.x +
                          self.cell_size / 4, sprite.rect.y))
 
     def draw_lines(self, display):
+        """Piirtää näytölle sudokun 3x3 ruudukot rajaavat viivat.
+
+        Args:
+            display: Näyttö, jolle piirretään.
+        """
         for i in range(len(self.grid) + 1):
             if i % 3 == 0:
                 pygame.draw.line(display, (0, 0, 0), (0, i*self.cell_size),
@@ -57,20 +83,18 @@ class ViewSudoku:
                                  (i * self.cell_size, len(self.grid) * self.cell_size), 6)
 
     def draw_selected_square(self):
+        """Piirtää näytölle neliön, joka näyttää nykyisen valitun ruudun."""
         pygame.draw.rect(self.selected_square.image,
                          self.selected_square.color, self.selected_square.rect, 7)
 
-    def draw_unvalid():
-        # korostaa punaisella epävalidin vastauksen syyn
-        pass
-
-    def _initialize_sprites(self, grid, originals):
-        height = len(grid)
-        width = len(grid[0])
+    def _initialize_sprites(self):
+        """Alustaa Sprite -oliot."""
+        height = len(self.grid)
+        width = len(self.grid[0])
         for y in range(height):
             for x in range(width):
-                original = originals[y][x]
-                added = grid[y][x]
+                original = self.originals[y][x]
+                added = self.grid[y][x]
                 normalized_x = x * self.cell_size
                 normalized_y = y * self.cell_size
                 if added == 0 and original == 0:
@@ -86,10 +110,25 @@ class ViewSudoku:
                              self.original_numbers, self.selected_square)
 
     def move(self, dx=0, dy=0):
+        """Muuttaa nykyisen valitun ruudun Sprite -olion x- ja y -koordinaatteja. 
+
+        Args:
+            dx: Käyttäjän nuolinäppäimillä antama x -koordinaatin suunta, johon ruutua liikutetaan.
+            dy: Käyttäjän nuolinäppäimillä antama y -koordinaatin suunta, johon ruutua liikutetaan.
+        """
         if self.can_move(dx, dy):
             self.selected_square.rect.move_ip(dx, dy)
 
     def can_move(self, dx, dy):
+        """Tarkistaa, onko valittu liikkumissuunta mahdollinen.
+
+        Args:
+            dx: Käyttäjän nuolinäppäimillä antama x -koordinaatin suunta, johon ruutua liikutetaan.
+            dy: Käyttäjän nuolinäppäimillä antama y -koordinaatin suunta, johon ruutua liikutetaan.
+
+        Returns:
+            Totuusarvon, joka kertoo, onko liikuttaminen mahdollista.
+        """
         if (self.selected_square.rect[0] + dx < 0 or
             self.selected_square.rect[1] + dy < 0 or
             self.selected_square.rect[0] + dx + self.cell_size > 9 * self.cell_size or
@@ -98,34 +137,65 @@ class ViewSudoku:
         return True
 
     def get_coordinates(self):
+        """Palauttaa nykyisen valitun ruudun koordinaatit pikseleinä.
+
+        Returns:
+            Nykyisen valitun ruudun koordinaatit pikseleinä.
+        """
         return self.selected_square.rect.x, self.selected_square.rect.y
 
     def get_normalized_coordinates(self):
+        """Palauttaa nykyisen valitun ruudun koordinaatit ruudukkoon normalisoituina.
+
+        Returns:
+            Nykyisen valitun ruudun koordinaatit normalisoituina eli valittu sijainti sudokun
+            ruudukossa.
+        """
         coordinates = self.get_coordinates()
         return int(coordinates[0] / self.cell_size), int(coordinates[1] / self.cell_size)
 
     def get_grid(self, index):
+        """Etsii tiedon siitä, mihin kolmannekseen valittu indeksi kuuluu ruudukossa.
+
+        Args:
+            index: valitun ruudun rivi tai sarake
+
+        Returns:
+            Valitun ruudun kolmanneksen minimi- ja maksimiarvo.
+        """
         grids = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
         for grid in grids:
             if index in grid:
                 return min(grid), max(grid)
 
-    def update(self, current_time):
-        pass
-
     def is_completed(self):
+        """Tarkistaa, onko käyttäjä lisännyt kaikki numerot.
+        """
         pass
-
-    def collide_original_numbers(self):
-        return pygame.sprite.spritecollide(self.selected_square, self.original_numbers, False)
 
     def collide_added_numbers(self):
+        """Tarkistaa, minkä käyttäjän lisäämien numerojen kanssa nykyinen valittu ruutu törmää.
+
+        Returns:
+            Sprite -olion, jonka kanssa nykyinen ruutu törmää.
+        """
         return pygame.sprite.spritecollide(self.selected_square, self.added_numbers, False)
 
     def collide_empty_squares(self):
+        """Tarkistaa, minkä tyhjän ruudun kanssa nykyinen valittu ruutu törmää.
+
+        Returns:
+            Sprite -olion, jonka kanssa nykyinen ruutu törmää.
+        """
         return pygame.sprite.spritecollide(self.selected_square, self.empty_squares, False)
 
     def add_number(self, number):
+        """Muokkaa Sprite -olioita niin että lisätyn numeron ruutu on AddedNumber -luokan
+        Sprite -olio, eikä EmptySquare -luokan olio, jos ruutuun saa lisätä uuden numeron.
+
+        Args:
+            number: Käyttäjän lisäämä numero, joka annetaan parametrina AddedNumber -luokalle.
+        """
         column, row = self.get_normalized_coordinates()
         if sudoku_service.add_number(self.originals, self.user_sudoku, row, column, number):
             x, y = self.get_coordinates()
@@ -135,24 +205,21 @@ class ViewSudoku:
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
 
-            sudoku_service.add_number(row = row, column = column, number = number, originals=self.original_numbers, sudoku = self.user_sudoku)
-
-            #self.check_column(row=row, column=column, number=number)
-            #self.check_row(column=column, row=row, number=number)
-            #self.check_small_grid(row=row, column=column, number=number)
+            sudoku_service.add_number(row=row, column=column, number=number,
+                                      originals=self.original_numbers, sudoku=self.user_sudoku)
 
     def delete_number(self):
+        """Muokkaa Sprite -olioita niin, että nykyinen ruutu on EmptySquare -luokan olio eikä
+        AddedNumber -luokan olio, jos numeron poistaminen ruudusta on salittua.
+        """
         column, row = self.get_normalized_coordinates()
         if sudoku_service.delete_number(self.originals, self.user_sudoku, row, column):
-            # testaus ettei numero oo alkuperäinen eli voi poistaa
             for sprite in self.collide_added_numbers():
                 sprite.kill()
             x, y = self.get_coordinates()
             column, row = self.get_normalized_coordinates()
             self.empty_squares.add(self.sprites.EmptySquare(x, y))
             self.all_sprites.add(self.sprites.EmptySquare(x, y))
-
-    # näitä ei käytetä sittenkään eli ei anneta virheviestiä heti jos käyttäjä tekee virheen vaan vasta kun valmis
 
     def check_row(self, column, row, number):
         column_index = -1

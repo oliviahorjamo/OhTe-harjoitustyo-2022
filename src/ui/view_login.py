@@ -25,7 +25,8 @@ class LoginView:
             text="Log in", x=self.display.get_width() / 4, y=150)
         self.create_user_button = Button(
             text="Create user", x=self.display.get_width() / 4, y=200)
-        self.all_sprites.add(self.username_field, self.password_field, self.login_button, self.create_user_button)
+        self.all_sprites.add(self.username_field, self.password_field,
+                             self.login_button, self.create_user_button)
 
     def draw_login_view(self):
         self.draw_login_fields()

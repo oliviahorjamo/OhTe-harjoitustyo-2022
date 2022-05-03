@@ -11,6 +11,7 @@ def get_user_by_row(row):
 class UserRepository:
     """Käyttäjien tietoja hallitseva luokka.
     """
+
     def __init__(self, connection):
         """Konstruktori, joka luo uuden UserRepository -olion.
 

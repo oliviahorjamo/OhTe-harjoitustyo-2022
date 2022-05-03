@@ -9,6 +9,7 @@ class OriginalSudokuRepository:
     """Alkuperäisten sudokun numeroihin liittyvästä pysyväistallennuksesta ja numeroiden
     etsimisestä vastaava luokka.
     """
+
     def __init__(self, file_path):
         """Konstruktori, joka luo uuden OriginalSudokuRepository -luokan olion.
 
@@ -73,7 +74,7 @@ class OriginalSudokuRepository:
 
     def _write(self, originals):
         """Kirjoittaa csv -tiedostoon kaikki parametrina annetut alkuperäiset sudokut.
-        
+
         Args:
             Lista alkuperäisistä sudokuista OriginalSudoku -olioina.
         """
@@ -100,11 +101,13 @@ class OriginalSudokuRepository:
 class SudokuRepository:
     """Käyttäjän sudoku -ratkaisuihin liittyvästä pysyväistallennuksesta huolehtiva luokka.
     """
+
     def __init__(self, file_path):
         """Konstruktori, joka luo uuden SudokuRepository -luokan olion.
 
         Args:
-            file_path: Polku tiedostoon, johon käyttäjän lisäämät sudokun numerot on tallennettu/tallennetaan.
+            file_path: Polku tiedostoon, johon käyttäjän lisäämät sudokun numerot on
+            tallennettu/tallennetaan.
         """
         self.file_path = file_path
 
@@ -115,7 +118,8 @@ class SudokuRepository:
         return self.read()
 
     def find_by_id_and_user(self, original_sudoku_id, user_name):
-        """Etsii käyttäjän keskeneräisen ratkaisun alkuperäisen sudokun id:n ja käyttäjän nimen perusteella.
+        """Etsii käyttäjän keskeneräisen ratkaisun alkuperäisen sudokun id:n ja käyttäjän nimen
+        perusteella.
 
         Args:
             original_sudoku_id: Käyttäjän käyttöliittymässä klikkaaman alkuperäisen sudokun id
@@ -193,7 +197,7 @@ class SudokuRepository:
 
     def write_new_numbers(self, sudoku):
         """Kirjoittaa uudet numerot csv -tiedoston loppuun
-        
+
         Args: Sudoku -luokan olio, jonka numerot tulee kirjoittaa tiedostoon"""
         with open(self.file_path, "a", encoding="utf-8") as file:
             row = f"""{sudoku.original_sudoku_id};{str(sudoku.user)};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""

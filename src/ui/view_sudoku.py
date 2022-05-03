@@ -20,8 +20,10 @@ class ViewSudoku:
         """
         pygame.font.init()
 
-        self.original_sudoku = sudoku_service.find_original_numbers(original_sudoku_id)
-        self.user_sudoku = sudoku_service.find_added_numbers(original_sudoku_id)
+        self.original_sudoku = sudoku_service.find_original_numbers(
+            original_sudoku_id)
+        self.user_sudoku = sudoku_service.find_added_numbers(
+            original_sudoku_id)
         if self.user_sudoku.user == None:
             self.user_sudoku.user = sudoku_service._user.username
         self.sprites = ui.sprites

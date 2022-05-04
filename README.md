@@ -1,6 +1,6 @@
 # OhTe projekti - SudokuGame
 
-Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus. 
+Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus. Sovelluksen viimeisin release on saatavilla [täällä](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/releases/tag/viikko6)
 
 ## Dokumentaatio
 

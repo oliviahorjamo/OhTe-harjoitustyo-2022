@@ -9,6 +9,7 @@ class Renderer:
     def __init__(self, display, current_view=None):
         self._display = display
         self.current_view = current_view
+        pygame.display.set_caption("Sudoku game")
 
     def render(self):
         self._display.fill((255, 255, 255))

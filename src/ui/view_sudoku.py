@@ -34,6 +34,7 @@ class ViewSudoku:
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
         self.added_numbers = pygame.sprite.Group()
+        self.horizontal_lines = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.selected_square = self.sprites.SelectedSquare(self.cell_size)
 
@@ -47,7 +48,7 @@ class ViewSudoku:
             display: Näyttö, jolle piirretään
         """
         self.draw_added_numbers(display)
-        self.draw_lines(display)
+        #self.draw_lines(display)
         self.draw_original_numbers(display)
         self.draw_selected_square()
 
@@ -93,12 +94,20 @@ class ViewSudoku:
         """Alustaa Sprite -oliot."""
         height = len(self.grid)
         width = len(self.grid[0])
-        for y in range(height):
-            for x in range(width):
-                original = self.originals[y][x]
-                added = self.grid[y][x]
+        for y in range(height + 1):
+            for x in range(width + 1):
                 normalized_x = x * self.cell_size
                 normalized_y = y * self.cell_size
+                if y % 3 == 0:
+                    self.horizontal_lines.add(self.sprites.HorizontalLine(
+                    width=width, cell_size=self.cell_size, x = 0, y = normalized_y))
+                if x % 3 == 0:
+                    self.horizontal_lines.add(self.sprites.VerticalLine(
+                    height=height, cell_size=self.cell_size, x = normalized_x, y = 0))
+                if y == height or x == height:
+                    continue
+                original = self.originals[y][x]
+                added = self.grid[y][x]
                 if added == 0 and original == 0:
                     self.empty_squares.add(
                         self.sprites.EmptySquare(normalized_x, normalized_y))
@@ -109,7 +118,7 @@ class ViewSudoku:
                     self.added_numbers.add(self.sprites.AddedNumber(
                         str(added), normalized_x, normalized_y))
         self.all_sprites.add(self.empty_squares,
-                             self.original_numbers, self.selected_square)
+                             self.original_numbers, self.selected_square, self.horizontal_lines)
 
     def move(self, dx=0, dy=0):
         """Muuttaa nykyisen valitun ruudun Sprite -olion x- ja y -koordinaatteja. 

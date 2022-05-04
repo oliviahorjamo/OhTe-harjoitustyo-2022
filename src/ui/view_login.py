@@ -14,6 +14,10 @@ class LoginView:
         self.username = ""
         self.password = ""
         self.all_sprites = pygame.sprite.Group()
+        self.write_username = False
+        self.write_password = False
+        self.mouse_over_login = False
+        self.mouse_over_create_user = False
         self._initialize_sprites()
 
     def _initialize_sprites(self):
@@ -34,29 +38,43 @@ class LoginView:
         self.draw_create_user_button()
 
     def draw_login_fields(self):
-        pygame.draw.rect(self.display, (0, 0, 0), self.username_field.rect, 3)
-        pygame.draw.rect(self.display, (0, 0, 0), self.password_field.rect, 3)
-        self.username_text = self.username_field.font.render(
+        self.draw_username_field()
+        self.draw_password_field()
+
+    def draw_username_field(self):
+        if self.write_username:
+            pygame.draw.rect(self.display, (206, 243, 245), self.username_field.rect)
+        pygame.draw.rect(self.display, (0, 0, 0), self.username_field.rect, 2)
+        description = self.username_field.font.render(
             "Käyttäjänimi", 1, (0, 0, 0))
         self.display.blit(
-            self.username_text, (self.username_field.rect.x, self.username_field.rect.y - 30))
+            description, (self.username_field.rect.x, self.username_field.rect.y - 30))
+        text_surface = self.username_field.font.render(self.username, 1, (0, 0, 0))
+        self.display.blit(
+            text_surface, (self.username_field.rect.x + 10, self.username_field.rect.y))
+
+    def draw_password_field(self):
+        if self.write_password:
+            pygame.draw.rect(self.display, (206, 243, 245), self.password_field.rect)
+        pygame.draw.rect(self.display, (0, 0, 0), self.password_field.rect, 2)
         self.password_text = self.password_field.font.render(
             "Salasana", 1, (0, 0, 0))
         self.display.blit(
             self.password_text, (self.password_field.rect.x + 10, self.password_field.rect.y - 30))
-        text = self.username_field.font.render(self.username, 1, (0, 0, 0))
+        password_text = self.password_field.font.render(self.password, 1, (0, 0, 0))
         self.display.blit(
-            text, (self.username_field.rect.x + 10, self.username_field.rect.y))
-        text = self.password_field.font.render(self.password, 1, (0, 0, 0))
-        self.display.blit(
-            text, (self.password_field.rect.x + 10, self.password_field.rect.y))
+            password_text, (self.password_field.rect.x + 10, self.password_field.rect.y))
 
     def draw_login_button(self):
+        if self.mouse_over_login:
+            pygame.draw.rect(self.display, (206, 243, 245), self.login_button)
         pygame.draw.rect(self.display, (0, 0, 0), self.login_button, 2)
         self.display.blit(self.login_button.text,
                           (self.login_button.rect.x + 10, self.login_button.rect.y))
 
     def draw_create_user_button(self):
+        if self.mouse_over_create_user:
+            pygame.draw.rect(self.display, (206, 243, 245), self.create_user_button)
         pygame.draw.rect(self.display, (0, 0, 0), self.create_user_button, 2)
         self.display.blit(self.create_user_button.text,
                           (self.create_user_button.rect.x + 10, self.create_user_button.rect.y))

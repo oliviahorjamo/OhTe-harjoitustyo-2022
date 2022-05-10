@@ -44,6 +44,9 @@ class SudokuService:
         self._user = user
         return user
 
+    def logout(self):
+        self._user = None
+
     def create_user(self, username, password, login=True):
         """Luo uuden käyttäjän ja mahdollisesti kirjaa tämän sisään.
 

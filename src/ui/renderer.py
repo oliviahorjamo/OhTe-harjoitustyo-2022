@@ -19,6 +19,7 @@ class Renderer:
             self.current_view.draw_mainpage(self._display)
         elif isinstance(self.current_view, ViewSudoku):
             self.current_view.all_sprites.draw(self._display)
+            self.current_view.horizontal_lines.draw(self._display)
             self.current_view.draw_sudoku(self._display)
 
         pygame.display.update()

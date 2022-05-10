@@ -95,5 +95,10 @@ class LoginView:
         if self.create_user_button.rect.collidepoint(mouse):
             return True
 
+    def make_login_page_empty(self):
+        self.username = ""
+        self.password = ""
+        self.mouse_over_login = False
+        self.mouse_over_create_user = False
 
 login_view = LoginView()

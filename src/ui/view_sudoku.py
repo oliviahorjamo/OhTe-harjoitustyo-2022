@@ -1,8 +1,6 @@
 
 import pygame
-import os
 from services.sudoku_service import sudoku_service
-from entities.sudoku import OriginalSudoku, Sudoku
 import ui.sprites
 
 
@@ -30,6 +28,9 @@ class ViewSudoku:
         self.grid = self.user_sudoku.grid
         self.originals = self.original_sudoku.grid
 
+        self.mouse_over_logout = False
+        self.mouse_over_backbutton = False
+
         self.cell_size = 33
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
@@ -37,6 +38,8 @@ class ViewSudoku:
         self.horizontal_lines = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.selected_square = self.sprites.SelectedSquare(self.cell_size)
+        self.logout_button = self.sprites.Button("Log out", x=400, y = 20)
+        self.back_button = self.sprites.Button("Return", x = 400, y = 45)
 
         self._initialize_sprites()
 
@@ -48,9 +51,27 @@ class ViewSudoku:
             display: Näyttö, jolle piirretään
         """
         self.draw_added_numbers(display)
-        #self.draw_lines(display)
         self.draw_original_numbers(display)
         self.draw_selected_square()
+        self.draw_buttons(display)
+
+    def draw_buttons(self, display):
+        self.draw_logout(display)
+        self.draw_back_button(display)
+
+    def draw_logout(self, display):
+        if self.mouse_over_logout:
+            pygame.draw.rect(display, (206, 243, 245), self.logout_button)
+        pygame.draw.rect(display, (0,0,0), self.logout_button, 2)
+        display.blit(self.logout_button.text,
+                          (self.logout_button.rect.x + 10, self.logout_button.rect.y))
+
+    def draw_back_button(self, display):
+        if self.mouse_over_backbutton:
+            pygame.draw.rect(display, (206, 243, 245), self.back_button)
+        pygame.draw.rect(display, (0,0,0), self.back_button, 2)
+        display.blit(self.back_button.text,
+                          (self.back_button.rect.x + 10, self.back_button.rect.y))
 
     def draw_original_numbers(self, display):
         """Piirtää näytölle sudokuun liitetyt alkuperäiset numerot.
@@ -231,6 +252,14 @@ class ViewSudoku:
             column, row = self.get_normalized_coordinates()
             self.empty_squares.add(self.sprites.EmptySquare(x, y))
             self.all_sprites.add(self.sprites.EmptySquare(x, y))
+
+    def logout_button_collide(self, mouse):
+        if self.logout_button.rect.collidepoint(mouse):
+            return True
+
+    def back_button_collide(self, mouse):
+        if self.back_button.rect.collidepoint(mouse):
+            return True
 
     def check_row(self, column, row, number):
         column_index = -1

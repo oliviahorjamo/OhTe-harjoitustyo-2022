@@ -58,6 +58,16 @@ class GameLoop:
             else:
                 self.mainpage.underline_sudoku = None
 
+            if self.mainpage.logout_button_collide(pygame.mouse.get_pos()):
+                self.mainpage.mouse_over_logout = True
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    sudoku_service.logout()
+                    self.show_mainpage = False
+                    self.show_login = True
+                    self._renderer.current_view = login_view
+            else:
+                self.mainpage.mouse_over_logout = False
+
             if event.type == pygame.QUIT:
                 return False
 
@@ -83,6 +93,7 @@ class GameLoop:
                         self.show_login = False
                         self.show_mainpage = True
                         self._renderer.current_view = self.mainpage
+                        self.login_view.make_login_page_empty()
                     except InvalidCredentialsError:
                         print("väärä käyttäjänimi tai salasana")
 
@@ -144,6 +155,25 @@ class GameLoop:
 
                 if event.key == pygame.K_DELETE:
                     self.view_sudoku.delete_number()
+
+            if self.view_sudoku.logout_button_collide(pygame.mouse.get_pos()):
+                self.view_sudoku.mouse_over_logout = True
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    sudoku_service.logout()
+                    self.show_sudoku = False
+                    self.show_login = True
+                    self._renderer.current_view = login_view
+            else:
+                self.view_sudoku.mouse_over_logout = False
+
+            if self.view_sudoku.back_button_collide(pygame.mouse.get_pos()):
+                self.view_sudoku.mouse_over_backbutton = True
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.show_sudoku = False
+                    self.show_mainpage = True
+                    self._renderer.current_view = mainpage
+            else:
+                self.view_sudoku.mouse_over_backbutton = False
 
             if event.type == pygame.QUIT:
                 return False

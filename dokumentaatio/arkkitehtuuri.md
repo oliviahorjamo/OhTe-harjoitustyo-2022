@@ -4,16 +4,14 @@
 
 Sovelluksen rakenne mukailee kurssin referenssisovelluksen [TodoApp](https://github.com/ohjelmistotekniikka-hy/python-todo-app) kolmitasoista kerrosarkkitehtuuria, ja sisältää seuraavat pakkaukset/kansiot.
 
-- **ui** sisältää käyttöliittymään liittyvän koodin
-- **services** sisältää sovelluslogiikkaan liittyvät koodin
-- **repositories** sisältää sovelluksen tarvitseman pysyväistallennukseen liittyvän koodin
-- **entities** sisältää sovelluksen tietokohteisiin liittyvän koodin
-
-Nämä paketit sisältävät seuraavassa luokkakaaviossa esitetyt luokat.
+- [**ui**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/tree/master/src/ui) sisältää käyttöliittymään liittyvän koodin
+- [**services**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/tree/master/src/services) sisältää sovelluslogiikkaan liittyvät koodin
+- [**repositories**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/tree/master/src/repositories) sisältää sovelluksen tarvitseman pysyväistallennukseen liittyvän koodin
+- [**entities**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/tree/master/src/entities) sisältää sovelluksen tietokohteisiin liittyvän koodin
 
 ### Luokkakaavio sovelluksesta
 
-Oheinenkaavio kuvastaa sovelluksen luokkien suhdetta toisiinsa.
+Oheinen kaavio kuvastaa sovelluksen luokkien suhdetta toisiinsa.
 
 ```mermaid
  classDiagram
@@ -42,18 +40,25 @@ Oheinenkaavio kuvastaa sovelluksen luokkien suhdetta toisiinsa.
       }
       ViewSudoku --> SudokuService
       ViewLogin --> SudokuService
+      ViewMainpage --> SudokuService
+      GameLoop --> ViewSudoku
+      GameLoop --> ViewLogin
+      GameLoop --> ViewMainpage
+      GameLoop --> SudokuService
       SudokuService --> "0..1" User
       SudokuService --> "0..1" Sudoku
       SudokuService --> UserRepository
       UserRepository --> User
       SudokuService --> SudokuRepository
       SudokuRepository --> Sudoku
-      Sudoku --> OriginalSudoku
+      Sudoku --> "1" OriginalSudoku
       OriginalSudokuRepository --> OriginalSudoku
       SudokuService --> OriginalSudokuRepository
 ```
 
 ## Käyttöliittymä
+
+Käyttöliittymän toteuttamisessa on käytetty Python pygame -kirjastoa. Kaikki käyttöliittymään liittyvä koodi löytyy ui -kansiosta.
 
 Käyttöliittymä sisältää kolme erilaista näkymää:
 
@@ -61,12 +66,16 @@ Käyttöliittymä sisältää kolme erilaista näkymää:
 - Etusivu jossa lista sudokuista
 - Sudokun pelinäkymä
 
-Käyttäjän käyttöliittymässä antaman syötteen huomioimisesta ja näkymien vaihtamisesta huolehtii GameLoop -luokka. Näkymän päivittämisestä huolehtii Renderer -luokka, jota kutsutaan joka kierroksella. Kaikki käyttöliittymän koodi huolehtii vain käyttöliittymän päivittämisestä ja kutsuu SudokuService -luokan metodeja, joka huolehtii itse sovelluslogiikasta.
+Käyttäjän käyttöliittymässä antaman syötteen huomioimisesta ja näkymien vaihtamisesta huolehtii [GameLoop](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/gameloop.py) -luokka. Näkymän päivittämisestä huolehtii [Renderer](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/renderer.py) -luokka, jota GameLoop kutsuu joka kierroksella. GameLoop kutsuu seuraavia luokkia erillisten näkymien piirtämiseen:
 
-Kirjautumisesta ja uuden käyttäjän luomisesta vastaavan näkymän piirtämisestä huolehtii LoginView -luokka.
-Etusivun piirtämisestä huolehtii ViewMainpage -luokka.
-Sudokun pelinäkymän piirtämisestä huolehtii ViewSudoku -luokka.
+Kirjautumisesta ja uuden käyttäjän luomisesta vastaavan näkymän piirtämisestä huolehtii [LoginView](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_login.py) -luokka.
+Etusivun piirtämisestä huolehtii [Mainpage](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_mainpage.py) -luokka.
+Sudokun pelinäkymän piirtämisestä huolehtii [ViewSudoku](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_sudoku.py) -luokka.
 Kaikki luokat on sijoitettu omiin ui -kansiosta löytyviin moduuleihinsa.
+
+Kaikki edellä mainitut luokat käyttävät Sprite -olioita käyttöliittymän objektien esittämiseen. Näiden koodi löytyy [sprites](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/sprites.py) -moduulista. 
+
+Kaikki käyttöliittymän koodi huolehtii vain käyttöliittymän näyttämisestä ja käyttäjän syötteen huomioimisesta. Käyttöliittymä kutsuu [SudokuService](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py) -luokan metodeja, joka huolehtii itse sovelluslogiikasta.
 
 ## Sovelluslogiikka
 
@@ -76,6 +85,25 @@ Sovellus sisältää kolmenlaisia tietokohteita, jotka kaikki on toteutettu omin
 - **User** -luokka kuvaa käyttäjään liittyviä tietoja.
 - **OriginalSudoku** -luokka kuvaa alkuperäisiä sovellukseen lisättyjä sudokuita, joita ei voi muokata.
 - **Sudoku** -luokka kuvaa käyttäjän henkilökohtaisia muokattuja sudokuita, jotka liittyvät aina tiettyyn OriginalSudoku -luokan olioon.
+
+
+```mermaid
+ classDiagram
+      Sudoku "*" --> "1" User
+      Sudoku "1" --> "1" OriginalSudoku
+      class User{
+          username
+          password
+      }
+      class Sudoku{
+          original_sudoku_id
+          grid
+      }
+      class OriginalSudoku{
+      id
+      grid
+      }
+```
 
 SudokuService käsittelee sudokuihin ja käyttäjiin liittyviä tietoja repositories -pakkauksessa sijaitsevien luokkien OriginalSudokuRepository, SudokuRepository ja UserRepository avulla.
 

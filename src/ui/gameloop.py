@@ -77,12 +77,14 @@ class GameLoop:
                 if self.login_view.username_field_collide(pygame.mouse.get_pos()):
                     self.write_username = True
                     self.login_view.write_username = True
+                    self.login_view.error_happened = False
                 else:
                     self.write_username = False
                     self.login_view.write_username = False
                 if self.login_view.password_field_collide(pygame.mouse.get_pos()):
                     self.write_password = True
                     self.login_view.write_password = True
+                    self.login_view.error_happened = False
                 else:
                     self.write_password = False
                     self.login_view.write_password = False
@@ -95,7 +97,9 @@ class GameLoop:
                         self._renderer.current_view = self.mainpage
                         self.login_view.make_login_page_empty()
                     except InvalidCredentialsError:
-                        print("väärä käyttäjänimi tai salasana")
+                        message = "Väärä käyttäjänimi tai salasana"
+                        self.login_view.error_happened = True
+                        self.login_view.set_error_message(message)
 
                 if self.login_view.create_user_button_collide(pygame.mouse.get_pos()) and len(self.login_view.username) > 0 and len(self.login_view.password) > 0:
                     try:
@@ -104,8 +108,11 @@ class GameLoop:
                         self.show_login = False
                         self.show_mainpage = True
                         self._renderer.current_view = self.mainpage
+                        self.login_view.make_login_page_empty()
                     except UsernameExistsError:
-                        print("tällä käyttäjänimellä on jo käyttäjä")
+                        message = "Tällä käyttäjänimellä on jo käyttäjä"
+                        self.login_view.error_happened = True
+                        self.login_view.set_error_message(message)
 
             if event.type == pygame.KEYDOWN:
                 if self.write_username == True:

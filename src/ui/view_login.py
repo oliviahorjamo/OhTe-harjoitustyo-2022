@@ -1,8 +1,7 @@
 
 # Tämä tiedosto käsittelee sisään kirjautumiseen ja uuden käyttäjän luomiseen littyvän käyttöliittymän
 import pygame
-
-from ui.sprites import EnterTextField, Button
+from ui.sprites import EnterTextField, Button, Error
 
 
 class LoginView:
@@ -11,6 +10,7 @@ class LoginView:
         display_height = 500
         display_width = 500
         self.display = pygame.display.set_mode((display_width, display_height))
+        self.error_happened = False
         self.username = ""
         self.password = ""
         self.all_sprites = pygame.sprite.Group()
@@ -36,6 +36,13 @@ class LoginView:
         self.draw_login_fields()
         self.draw_login_button()
         self.draw_create_user_button()
+        if self.error_happened:
+            self.draw_error_message()
+
+    def draw_error_message(self):
+        #pygame.draw.rect(self.display, (0,0,0), self.error_message.rect, 2)
+        self.display.blit(self.error_message.text, self.error_message.rect)
+
 
     def draw_login_fields(self):
         self.draw_username_field()
@@ -94,6 +101,10 @@ class LoginView:
     def create_user_button_collide(self, mouse):
         if self.create_user_button.rect.collidepoint(mouse):
             return True
+
+    def set_error_message(self, message):
+        self.error_message = Error(text = message, 
+            center = self.display.get_rect().center)
 
     def make_login_page_empty(self):
         self.username = ""

@@ -110,3 +110,11 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+class Error(pygame.sprite.Sprite):
+    def __init__(self, text = "", center = (0,0)):
+        super().__init__()
+        self.font = pygame.font.SysFont("Arial", 25)
+        self.text = self.font.render(text, 1, (121,205,205))
+        self.rect = self.text.get_rect()
+        self.rect.center = center

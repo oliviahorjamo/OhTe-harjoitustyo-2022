@@ -13,4 +13,5 @@
 |23.4.  |  4   |Sisäänkirjautumissivun ja käyttäjärepositorion luominen|
 |26.4.  |  3   |Konfiguraatiot ja lisää unittestejä|
 |3.5.   |  5   |Käyttäjän keskeneräisen ratkaisun tallentaminen ja hakeminen repositoriosta, koodin refaktorointia ja parantelua koodikatselmuksen palautteen mukaisesti. Docstringien kirjoittaminen dokumentaation parantaminen.|
-|yht    |  30  |
+|10.5.  |  2   |Käyttäjä voi kirjautua ulos ja palata edelliselle sivulle.|
+|yht    |  32  |

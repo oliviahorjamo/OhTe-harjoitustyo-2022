@@ -9,6 +9,10 @@ Projektina toteutetaan kurssin esimerkkiprojektien listasta Sudoku -sovellus. So
 - [Changelog](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/changelog.md)
 - [Arkkitehtuuri](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/arkkitehtuuri.md)
 - [Käyttöohje](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/kayttoohje.md)
+- [Testausdokumentti](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/dokumentaatio/testaus.md)
+- [Release 5](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/releases/tag/viikko5)
+- [Release 6](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/releases/tag/viikko6)
+- [Loppupalautus](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/releases/tag/Loppupalautus)
 
 ## Komentorivitoiminnot
 

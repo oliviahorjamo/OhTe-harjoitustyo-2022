@@ -35,7 +35,7 @@ Sovelluksen järjestelmätestaus on suoritettu manuaalisesti.
 
 ### Asennus
 
-Sovellus on haettu sitä on testattu [käyttöohjeen](./kayttoohje.md) kuvaamalla tavalla Linux -ympäristössä. Testauksessa ei ole muutettu sovelluksen konfiguraatioita eikä sovellusta ole testattu tilanteessa, jossa pysyväistallennukseen tarvittavia tiedostoja ei ole ollut valmiiksi olemassa.
+Sovellus on haettu sitä on testattu [käyttöohjeen](./kayttoohje.md) kuvaamalla tavalla Linux -ympäristössä. Testauksessa ei ole muutettu sovelluksen konfiguraatioita. Sovellusta on testattu tilanteessa, jossa pysyväistallennukseen tarvittavia tiedostoja ei ole olemassa.
 
 ### Toiminnallisuudet
 

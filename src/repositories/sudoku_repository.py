@@ -186,7 +186,7 @@ class SudokuRepository:
         """Kirjoittaa uudet sudokut csv -tiedstoon."""
         with open(self.file_path, "w", encoding="utf-8") as file:
             for sudoku in sudokus:
-                row = f"""{sudoku.id};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
+                row = f"""{sudoku.id};{sudoku.username},{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
                 file.write(row+"\n")
 
     def delete_old_numbers(self, original_sudoku_id, user_name):
@@ -211,12 +211,6 @@ class SudokuRepository:
         with open(self.file_path, "a", encoding="utf-8") as file:
             row = f"""{sudoku.original_sudoku_id};{str(sudoku.user)};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
             file.write(row+"\n")
-
-    def create(self, original_sudoku):
-        originals = self.find_all()
-        originals.append(original_sudoku)
-        self._write(originals)
-        return original_sudoku
 
 
 sudoku_repository = SudokuRepository(SUDOKUS_FILE_PATH)

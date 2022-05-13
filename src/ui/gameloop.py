@@ -114,14 +114,6 @@ class GameLoop:
                         error_message = "Väärä käyttäjänimi tai salasana"
                         self._login_view.error_happened = True
                         self._login_view.set_error_message(error_message)
-                    except InvalidUsernameError:
-                        error_message = "Käyttäjänimi pitää olla 1-19 merkkiä"
-                        self._login_view.error_happened = True
-                        self._login_view.set_error_message(error_message)
-                    except InvalidPasswordError:
-                        error_message = "Salasana pitää olla 1-19 merkkiä"
-                        self._login_view.error_happened = True
-                        self._login_view.set_error_message(error_message)
 
                 if self._login_view.create_user_button_collide(pygame.mouse.get_pos()):
                     try:

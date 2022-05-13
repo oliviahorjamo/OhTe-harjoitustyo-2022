@@ -39,10 +39,6 @@ class SudokuService:
         Returns:
             user: Kirjautuneen käyttäjän tiedoilla luotu User-olio
         """
-        if self.check_username_validity(username) == False:
-            raise InvalidUsernameError
-        if self.check_password_validity(password) == False:
-            raise InvalidPasswordError
         user = self._user_repository.find_by_username(username)
         if not user or user.password != password:
             raise InvalidCredentialsError('Invalid username or password')

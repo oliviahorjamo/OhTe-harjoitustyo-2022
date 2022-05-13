@@ -22,9 +22,9 @@ Käyttöliittymä sisältää kolme erilaista näkymää:
 
 Käyttäjän käyttöliittymässä antaman syötteen huomioimisesta ja näkymien vaihtamisesta huolehtii [GameLoop](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/gameloop.py) -luokka. Näkymän päivittämisestä huolehtii [Renderer](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/renderer.py) -luokka, jota GameLoop kutsuu joka kierroksella. GameLoop kutsuu seuraavia luokkia erillisten näkymien piirtämiseen:
 
-Kirjautumisesta ja uuden käyttäjän luomisesta vastaavan näkymän piirtämisestä huolehtii [LoginView](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_login.py) -luokka.
-Etusivun piirtämisestä huolehtii [Mainpage](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_mainpage.py) -luokka.
-Sudokun pelinäkymän piirtämisestä huolehtii [ViewSudoku](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/view_sudoku.py) -luokka.
+Kirjautumisesta ja uuden käyttäjän luomisesta vastaavan näkymän piirtämisestä huolehtii [LoginView](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/login_view.py) -luokka.
+Etusivun piirtämisestä huolehtii [MainpageView](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/mainpage_view.py) -luokka.
+Sudokun pelinäkymän piirtämisestä huolehtii [SudokuView](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/sudoku_view.py) -luokka.
 Kaikki luokat on sijoitettu omiin ui -kansiosta löytyviin moduuleihinsa.
 
 Kaikki edellä mainitut luokat käyttävät Sprite -olioita käyttöliittymän objektien esittämiseen. Näiden koodi löytyy [sprites](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/sprites.py) -moduulista. 
@@ -107,22 +107,22 @@ Oheinen kaavio kuvastaa yllä mainittujen sovelluksen luokkien suhdetta toisiins
       }
       class SudokuService{
       }
-      class ViewSudoku{
+      class SudokuView{
           sudoku_id
           cell_size etc.
       }
-      class ViewLogin{
+      class LoginView{
       }
       class UserRepository{
       }
       class SudokuRepository{
       }
-      ViewSudoku --> SudokuService
-      ViewLogin --> SudokuService
-      ViewMainpage --> SudokuService
-      GameLoop --> ViewSudoku
-      GameLoop --> ViewLogin
-      GameLoop --> ViewMainpage
+      SudokuView --> SudokuService
+      LoginView --> SudokuService
+      MainpageView --> SudokuService
+      GameLoop --> SudokuView
+      GameLoop --> LoginView
+      GameLoop --> MainpageView
       GameLoop --> SudokuService
       SudokuService --> "0..1" User
       SudokuService --> "0..1" Sudoku
@@ -158,9 +158,9 @@ sequenceDiagram
   SudokuService->>UserRepository: create(olivia)
   UserRepository-->>SudokuService: user
   SudokuService-->>GameLoop: user
-  GameLoop->>GameLoop: start_mainpage()
+  GameLoop->>GameLoop: set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
 ```
-GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut uuden käyttäjän luomis -painiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [create_user](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L28) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa UserRepository -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
+GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut uuden käyttäjän luomis -painiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [create_user](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L28) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa [UserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/user_repository.py) -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
 
 ### Sisään kirjautuminen
 
@@ -178,7 +178,7 @@ sequenceDiagram
   SudokuService->>UserRepository: find_by_username("olivia")
   UserRepository-->>SudokuService: user
   SudokuService-->>GameLoop: user
-  GameLoop->>GameLoop: start_mainpage()
+  GameLoop->>GameLoop: set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
 ```
 GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut sisäänkirjautumispainiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [login](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L28) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa UserRepository -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
 
@@ -194,18 +194,20 @@ sequenceDiagram
   User->>Mainpage: click a certain sudoku
   GameLoop->>Mainpage: sudoku_list_collide(pygame.mouse.get_pos())
   Mainpage-->>GameLoop: sudoku_id
-  GameLoop->>SudokuService: find_sudoku(sudoku_id)
+  GameLoop-->>sudoku_view: ViewSudoku(sudoku_id)
+  sudoku_view->>SudokuService: find_sudoku(sudoku_id)
   SudokuService->>OriginalSudokuRepository: find_by_id(sudoku_id)
   OriginalSudokuRepository->>original_sudoku: OriginalSudoku(id, grid)
   OriginalSudokuRepository-->>SudokuService: original_sudoku
+  SudokuService-->>sudoku_view: original_sudoku
+  sudoku_view->>SudokuService: find_added_numbers(sudoku_id)
   SudokuService->>SudokuRepository: find_by_id_and_user(sudoku_id, user.username)
   SudokuRepository->>sudoku: Sudoku(sudoku_id, grid, username)
   SudokuRepository-->>SudokuService: sudoku
-  SudokuService-->>GameLoop: original_sudoku, sudoku
-  GameLoop->>sudoku_view: ViewSudoku(original_sudoku, sudoku)
-  GameLoop->>GameLoop: start_sudoku_view()
+  SudokuService-->>sudoku_view: sudoku
+  GameLoop->>GameLoop: set_current_view(new_view=self._sudoku_view, old_view=self._mainpage_view)
 ```
-GameLoop saa Mainpagelta tiedon, että käyttäjä on klikannut tiettyä sudokua. GameLoop pyytää SudokuServicea etsimään kyseisellä sudokun id:lla löytyvät tiedot. SudokuService pyytää OriginalSudokuRepositorya palauttamaan kyseisellä id:lla olevat alkuperäiset numerot OriginalSudoku -luokan oliona. Tämän jälkeen SudokuService kysyy SudokuRepositorylta käyttäjän mahdollisesti kyseiseen sudokuun tallentamaa keskeneräistä ratkaisua. SudokuRepository palauttaa keskeneräisen ratkaisun tai default -sudokun Sudoku -oliona. SudokuService palauttaa GameLoopille original_sudoku ja sudoku -oliot, joka luo näiden perusteella ViewSudoku -olion.
+GameLoop saa Mainpagelta tiedon, että käyttäjä on klikannut tiettyä sudokua. GameLoop luo uuden SudokuView() olion ja antaa sille parametriksi klikatun sudokun id-numeron. Luotu SudokuView() olio pyytää SudokuServicea etsimään kyseisellä sudokun id:lla löytyvät tiedot. SudokuService pyytää OriginalSudokuRepositorya palauttamaan kyseisellä id:lla olevat alkuperäiset numerot OriginalSudoku -luokan oliona. SudokuService palauttaa tämän arvon ViewSudoku -oliolle, joka asettaa sen itselleen attribuutiksi (jätetty pois kuvasta selkeyden vuoksi). Tämän jälkeen ViewSudoku kysyy SudokuServicelta käyttäjän mahdollisesti kyseiseen sudokuun tallentamaa keskeneräistä ratkaisua. SudokuService pyytää tätä SudokuReposirotylta. SudokuRepository palauttaa keskeneräisen ratkaisun tai default -sudokun Sudoku -oliona. SudokuService palauttaa tämän ViewSudokulle, joka asettaa myös käyttäjän sudokun itselleen attribuutiksi.
 
 ### Numeron lisääminen sudokuun
 ```mermaid

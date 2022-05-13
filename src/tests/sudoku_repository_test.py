@@ -59,12 +59,13 @@ class TestOriginalSudokuRepository(unittest.TestCase):
         originals = original_sudoku_repository.find_all()
         self.assertEqual(len(originals), 0)
 
+
 class TestSudokuRepository(unittest.TestCase):
     def setUp(self):
         sudoku_repository.delete_all()
         self.user1 = User(username="testi", password="testi")
         self.user2 = User(username="testi2", password="testi2")
-        self.empty_sudoku_1 =Sudoku(original_sudoku_id=1, grid=[
+        self.empty_sudoku_1 = Sudoku(original_sudoku_id=1, grid=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -74,9 +75,9 @@ class TestSudokuRepository(unittest.TestCase):
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ], user = self.user1
+        ], user=self.user1
         )
-        self.empty_sudoku_2 =Sudoku(original_sudoku_id=2, grid=[
+        self.empty_sudoku_2 = Sudoku(original_sudoku_id=2, grid=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -86,10 +87,9 @@ class TestSudokuRepository(unittest.TestCase):
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ], user = self.user2
+        ], user=self.user2
         )
 
     def test_write_new_numbers(self):
         sudoku_repository.write_new_numbers(self.empty_sudoku_1)
         self.assertEqual(len(sudoku_repository.find_all()), 1)
-        

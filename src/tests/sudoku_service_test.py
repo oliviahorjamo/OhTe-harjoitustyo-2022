@@ -46,9 +46,9 @@ class TestSudokuService(unittest.TestCase):
 
     def test_login_with_valid_username_and_password(self):
         self.sudoku_service.create_user(
-        self.user_testi1.username,
-        self.user_testi1.password,
-        login = False
+            self.user_testi1.username,
+            self.user_testi1.password,
+            login=False
         )
 
         user = self.sudoku_service.login(
@@ -65,10 +65,12 @@ class TestSudokuService(unittest.TestCase):
         )
 
     def test_login_with_invalid_password(self):
-        self.sudoku_service.create_user(username=self.user_testi1.username, password=self.user_testi1.password, login = False)
+        self.sudoku_service.create_user(
+            username=self.user_testi1.username, password=self.user_testi1.password, login=False)
         self.assertRaises(
             InvalidCredentialsError,
-            lambda: self.sudoku_service.login(username = self.user_testi1.username, password ="test")
+            lambda: self.sudoku_service.login(
+                username=self.user_testi1.username, password="test")
         )
 
     def test_create_user_with_existing_username(self):
@@ -97,7 +99,8 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.assertEqual(user_sudoku.grid, self.empty_sudoku_1.grid)
         self.assertEqual(user_sudoku.user, self.user_testi1.username)
 
@@ -105,18 +108,20 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        1, 1, 1)
+                                       1, 1, 1)
         self.assertEqual(user_sudoku.grid[1][1], 1)
 
     def test_find_user_sudoku_by_id_when_previous_solution_exists(self):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        1, 1, 1)
+                                       1, 1, 1)
         user_sudoku_in_repository = self.sudoku_service.find_added_numbers(
             original_sudoku_id=original_sudoku_id
         )
@@ -127,20 +132,22 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        0, 2, 1)
+                                       0, 2, 1)
         self.assertEqual(user_sudoku.grid[0][2], 0)
 
     def test_no_double_accounts_in_repository(self):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        1, 1, 1)
+                                       1, 1, 1)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        0, 1, 1)
+                                       0, 1, 1)
         all_sudokus_in_repository = sudoku_repository.read()
         self.assertEqual(len(all_sudokus_in_repository), 1)
 
@@ -148,11 +155,12 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        1, 1, 1)
+                                       1, 1, 1)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        0, 1, 1)
+                                       0, 1, 1)
         user_sudoku_in_repository = self.sudoku_service.find_added_numbers(
             original_sudoku_id=original_sudoku_id
         )
@@ -163,11 +171,12 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku,
-        1, 1, 1)
+                                       1, 1, 1)
         self.sudoku_service.delete_number(self.original_sudoku_1.grid,
-        sudoku=user_sudoku, row=1, column=1)
+                                          sudoku=user_sudoku, row=1, column=1)
         user_sudoku_in_repository = self.sudoku_service.find_added_numbers(
             original_sudoku_id=original_sudoku_id
         )
@@ -178,35 +187,37 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.delete_number(original_numbers=self.original_sudoku_1.grid,
-            sudoku = user_sudoku, row = 0, column = 2)
+                                          sudoku=user_sudoku, row=0, column=2)
         original_sudoku_in_repository = self.sudoku_service.find_original_numbers(
             original_sudoku_id=original_sudoku_id
         )
         self.assertEqual(original_sudoku_in_repository.grid[0][2], 4)
 
-
     def test_other_users_solutions_not_deleted(self):
         self.login_user(self.user_testi1)
         original_sudoku_repository.create(self.original_sudoku_1)
         original_sudoku_id = self.original_sudoku_1.id
-        user_sudoku_1 = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku_1 = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku_1,
-        1, 1, 1)
+                                       1, 1, 1)
         self.login_user(self.user_testi2)
-        user_sudoku_2 = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_sudoku_2 = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.sudoku_service.add_number(self.original_sudoku_1.grid, user_sudoku_2,
-        1, 1, 2)
+                                       1, 1, 2)
         user_repository.delete_all()
         self.login_user(self.user_testi1)
-        user_1_sudoku_in_repository = self.sudoku_service.find_added_numbers(original_sudoku_id=original_sudoku_id)
+        user_1_sudoku_in_repository = self.sudoku_service.find_added_numbers(
+            original_sudoku_id=original_sudoku_id)
         self.assertEqual(user_1_sudoku_in_repository.grid[1][1], 1)
 
-
     def test_too_long_username_when_creating_user(self):
-        user = User(username = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        password="jee")
+        user = User(username="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    password="jee")
         self.assertRaises(
             InvalidUsernameError,
             lambda: self.sudoku_service.create_user(
@@ -214,8 +225,8 @@ class TestSudokuService(unittest.TestCase):
         )
 
     def test_too_long_password_when_creating_user(self):
-        user = User(username = "jee",
-        password="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        user = User(username="jee",
+                    password="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.assertRaises(
             InvalidPasswordError,
             lambda: self.sudoku_service.create_user(
@@ -226,4 +237,3 @@ class TestSudokuService(unittest.TestCase):
         self.login_user(self.user_testi1)
         self.sudoku_service.logout()
         self.assertEqual(self.sudoku_service._user, None)
-        

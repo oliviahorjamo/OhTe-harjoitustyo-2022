@@ -80,7 +80,7 @@ class OriginalSudokuRepository:
         """
         with open(self.file_path, "w", encoding="utf-8") as file:
             for original_sudoku in original_sudokus:
-                row = f"""{original_sudoku.id};{str(original_sudoku.grid[0])[1:-1]};{str(original_sudoku.grid[1])[1:-1]};{str(original_sudoku.grid[2])[1:-1]};{str(original_sudoku.grid[3])[1:-1]};{str(original_sudoku.grid[4])[1:-1]};{str(original_sudoku.grid[5])[1:-1]};{str(original_sudoku.grid[6])[1:-1]};{str(original_sudoku.grid[7])[1:-1]};{str(original_sudoku.grid[8])[1:-1]}"""
+                row = f"""{original_sudoku.id};{str(original_sudoku.grid[0])[1:-1]};{str(original_sudoku.grid[1])[1:-1]};{str(original_sudoku.grid[2])[1:-1]};{str(original_sudoku.grid[3])[1:-1]};{str(original_sudoku.grid[4])[1:-1]};{str(original_sudoku.grid[5])[1:-1]};{str(original_sudoku.grid[6])[1:-1]};{str(original_sudoku.grid[7])[1:-1]};{str(original_sudoku.grid[8])[1:-1]}""" # pylint: disable=line-too-long
                 file.write(row+"\n")
 
     def create(self, original_sudoku):
@@ -130,15 +130,15 @@ class SudokuRepository:
             Tyhjän default -sudokun, jos käyttäjä ei ole vielä luonut ratkaisua kyseiseen sudokuun.
         """
         sudokus = self.find_all()
-        self.original_sudoku_id = original_sudoku_id
-        self.user_name = user_name
-        current_sudoku = filter(self._filtering_function, sudokus)
+        current_sudoku = filter(lambda sudoku:
+            self._filtering_function(sudoku, original_sudoku_id, user_name),sudokus
+        )
         try:
             return list(current_sudoku)[0]
         except IndexError:
-            return Sudoku(original_sudoku_id=self.original_sudoku_id)
+            return Sudoku(original_sudoku_id=original_sudoku_id)
 
-    def _filtering_function(self, sudoku):
+    def _filtering_function(self, sudoku, original_sudoku_id, user_name):
         """Find_by_id_and_user() -metodin käyttämä metodi oikean sudokun filtteröimiseen.
 
         Args:
@@ -148,7 +148,7 @@ class SudokuRepository:
         Returns:
             Totuusarvon, joka kertoo täyttääkö kyseinen sudoku filter -funktion ehdot.
         """
-        if sudoku.original_sudoku_id == self.original_sudoku_id and sudoku.user == self.user_name:
+        if sudoku.original_sudoku_id == original_sudoku_id and sudoku.user == user_name:
             return True
         return False
 
@@ -186,7 +186,7 @@ class SudokuRepository:
         """Kirjoittaa uudet sudokut csv -tiedstoon."""
         with open(self.file_path, "w", encoding="utf-8") as file:
             for sudoku in sudokus:
-                row = f"""{sudoku.id};{sudoku.username},{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
+                row = f"""{sudoku.id};{sudoku.username},{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}""" # pylint: disable=line-too-long
                 file.write(row+"\n")
 
     def delete_old_numbers(self, original_sudoku_id, user_name):
@@ -209,7 +209,7 @@ class SudokuRepository:
 
         Args: Sudoku -luokan olio, jonka numerot tulee kirjoittaa tiedostoon"""
         with open(self.file_path, "a", encoding="utf-8") as file:
-            row = f"""{sudoku.original_sudoku_id};{str(sudoku.user)};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
+            row = f"""{sudoku.original_sudoku_id};{str(sudoku.user)};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}""" # pylint: disable=line-too-long
             file.write(row+"\n")
 
 

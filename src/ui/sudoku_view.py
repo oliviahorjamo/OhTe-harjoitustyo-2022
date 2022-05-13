@@ -51,10 +51,10 @@ class SudokuView:
                 normalized_y = y * self.cell_size
                 if y % 3 == 0:
                     self._lines.add(self._sprites.HorizontalLine(
-                    width=width, cell_size=self.cell_size, x = 0, y = normalized_y))
+                        width=width, cell_size=self.cell_size, x=0, y=normalized_y))
                 if x % 3 == 0:
                     self._lines.add(self._sprites.VerticalLine(
-                    height=height, cell_size=self.cell_size, x = normalized_x, y = 0))
+                        height=height, cell_size=self.cell_size, x=normalized_x, y=0))
                 if y == height or x == height:
                     continue
                 original = self._original_sudoku_grid[y][x]
@@ -69,13 +69,12 @@ class SudokuView:
                     self._added_numbers.add(self._sprites.AddedNumber(
                         str(added), normalized_x, normalized_y))
         self._all_sprites.add(self._empty_squares,
-                             self._original_numbers, self._selected_square, self._lines)
+                              self._original_numbers, self._selected_square, self._lines)
 
     def _initialize_individual_sprites(self):
         self._selected_square = self._sprites.SelectedSquare(self.cell_size)
-        self._logout_button = self._sprites.Button("Log out", x=400, y = 20)
-        self._return_button = self._sprites.Button("Return", x = 400, y = 45)
-
+        self._logout_button = self._sprites.Button("Log out", x=400, y=20)
+        self._return_button = self._sprites.Button("Return", x=400, y=45)
 
     def draw(self):
         """Piirtää pelinäkymän näytölle.
@@ -95,9 +94,9 @@ class SudokuView:
         """Kutsuu painikkeita piirtävää funktiota.
         """
         self._general_ui.draw_button(button=self._logout_button,
-            mouse_over_button=self.mouse_over_logout_button)
+                                     mouse_over_button=self.mouse_over_logout_button)
         self._general_ui.draw_button(button=self._return_button,
-            mouse_over_button=self.mouse_over_return_button)
+                                     mouse_over_button=self.mouse_over_return_button)
 
     def draw_original_numbers(self):
         """Piirtää näytölle sudokuun liitetyt alkuperäiset numerot.
@@ -117,8 +116,7 @@ class SudokuView:
         """
         for sprite in self._added_numbers:
             self._display.blit(sprite.text, (sprite.rect.x +
-                         self.cell_size / 4, sprite.rect.y))
-
+                                             self.cell_size / 4, sprite.rect.y))
 
     def draw_selected_square(self):
         """Piirtää näytölle neliön, joka näyttää nykyisen valitun ruudun."""
@@ -225,7 +223,8 @@ class SudokuView:
                 sprite.kill()
             for sprite in self.collide_added_numbers():
                 sprite.kill()
-            self._added_numbers.add(self._sprites.AddedNumber(str(number), x, y))
+            self._added_numbers.add(
+                self._sprites.AddedNumber(str(number), x, y))
             self._all_sprites.add(self._added_numbers)
         self.add_selected_square_to_top()
 

@@ -10,8 +10,10 @@ class InvalidCredentialsError(Exception):
 class UsernameExistsError(Exception):
     pass
 
+
 class InvalidUsernameError(Exception):
     pass
+
 
 class InvalidPasswordError(Exception):
     pass
@@ -63,9 +65,9 @@ class SudokuService:
         Returns:
             user: Käyttäjän tiedoilla luotu User -olio.
         """
-        if self.check_username_validity(username) == False:
+        if self.check_username_validity(username) is False:
             raise InvalidUsernameError
-        if self.check_password_validity(password) == False:
+        if self.check_password_validity(password) is False:
             raise InvalidPasswordError
         existing_user = self._user_repository.find_by_username(username)
         if existing_user:
@@ -96,8 +98,9 @@ class SudokuService:
         Returns:
             Kyseisillä id -numeroilla löytynyt käyttäjän aiemmin tallentama sudokun ratkaisu
             tai tyhjä sudoku, jos käyttäjä ei ole lisännyt vielä yhtäkään numeroa."""
-        sudoku = self._sudoku_repository.find_by_id_and_user(original_sudoku_id, self._user.username)
-        if sudoku.user == None:
+        sudoku = self._sudoku_repository.find_by_id_and_user(
+            original_sudoku_id, self._user.username)
+        if sudoku.user is None:
             sudoku.user = self._user.username
         return sudoku
 
@@ -116,10 +119,10 @@ class SudokuService:
         Returns:
             Totuusarvo, joka kertoo onnistuiko numeron lisääminen.
         """
-        if self.test_square_empty(original_numbers, sudoku, row, column):
+        if self.test_square_empty(original_numbers, row, column):
             sudoku.grid[row][column] = number
             self._sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
-                                                      user_name=self._user.username)
+                                                       user_name=self._user.username)
             self._sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
@@ -140,12 +143,12 @@ class SudokuService:
         if self.test_can_delete(original_numbers, row, column):
             sudoku.grid[row][column] = 0
             self._sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
-                                                      user_name=self._user.username)
+                                                       user_name=self._user.username)
             self._sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
 
-    def test_square_empty(self, original_numbers, sudoku, row, column):
+    def test_square_empty(self, original_numbers, row, column):
         """Tarkistaa, onko ruutu tyhjä eli ei sisällä käyttäjän lisäämää numeroa tai alkuperäistä
         numeroa.
 
@@ -194,8 +197,9 @@ class SudokuService:
         Returns:
             False, jos käyttäjänimi ei ole oikean pituinen.
         """
-        if not (20 > len(username) >= 1):
+        if not 20 > len(username) >= 1:
             return False
+        return False
 
     def check_password_validity(self, password):
         """Tarkistaa, onko salasana oikean pituinen.
@@ -206,7 +210,9 @@ class SudokuService:
         Returns:
             False, jos salasana ei ole oikean pituinen.
         """
-        if not (20 > len(password) >= 1):
+        if not 20 > len(password) >= 1:
             return False
+        return True
+
 
 sudoku_service = SudokuService()

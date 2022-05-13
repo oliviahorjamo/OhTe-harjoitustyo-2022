@@ -28,7 +28,7 @@ class LoginView:
         self._create_user_button = Button(
             text="Create user", x=self._display.get_width() / 4, y=200)
         self._all_sprites.add(self._username_field, self._password_field,
-                             self._login_button, self._create_user_button)
+                              self._login_button, self._create_user_button)
 
     def draw(self):
         self._display.fill((255, 255, 255))
@@ -41,16 +41,16 @@ class LoginView:
         self._display.blit(self.error_message.text, self.error_message.rect)
 
     def draw_login_fields(self):
-        self._general_ui.draw_text_field(field = self._username_field, description="Käyttäjänimi",
-        text = self.username, field_clicked=self.username_field_clicked)
-        self._general_ui.draw_text_field(field = self._password_field, description="Salasana",
-        text = self.password, field_clicked=self.password_field_clicked)
+        self._general_ui.draw_text_field(field=self._username_field, description="Käyttäjänimi",
+                                         text=self.username, field_clicked=self.username_field_clicked)
+        self._general_ui.draw_text_field(field=self._password_field, description="Salasana",
+                                         text=self.password, field_clicked=self.password_field_clicked)
 
     def draw_buttons(self):
-        self._general_ui.draw_button(button = self._login_button,
-        mouse_over_button=self.mouse_over_login_button)
+        self._general_ui.draw_button(button=self._login_button,
+                                     mouse_over_button=self.mouse_over_login_button)
         self._general_ui.draw_button(button=self._create_user_button,
-        mouse_over_button=self.mouse_over_create_user_button)
+                                     mouse_over_button=self.mouse_over_create_user_button)
 
     def username_field_collide(self, mouse):
         if self._username_field.rect.collidepoint(mouse):
@@ -69,8 +69,8 @@ class LoginView:
             return True
 
     def set_error_message(self, message):
-        self.error_message = Error(text = message, 
-            center = self._display.get_rect().center)
+        self.error_message = Error(text=message,
+                                   center=self._display.get_rect().center)
 
     def make_login_page_empty(self):
         self.username = ""

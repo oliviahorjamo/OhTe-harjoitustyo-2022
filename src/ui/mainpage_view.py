@@ -8,6 +8,7 @@ from ui.general_ui import GeneralUIDrawing
 class MainpageView:
     """Pelin etusivun generoimisesta vastaava luokka
     """
+
     def __init__(self, display):
         """Luokan konstruktori, joka luo uuden MainpageView -luokan olion.
 
@@ -37,8 +38,8 @@ class MainpageView:
     def draw_logout_button(self):
         """Kutsuu uloskirjautmis -painikkeen piirtävää funktiota
         """
-        self._general_ui.draw_button(button = self._logout_button,
-        mouse_over_button=self.mouse_over_logout_button)
+        self._general_ui.draw_button(button=self._logout_button,
+                                     mouse_over_button=self.mouse_over_logout_button)
 
     def draw_text(self):
         """Piirtää näytölle ohjetekstin
@@ -55,8 +56,8 @@ class MainpageView:
         """
         for sprite in self._sudoku_links:
             if sprite.id == self.underlined_sudoku:
-                pygame.draw.line(self._display, (0,0,0), (sprite.rect.x, sprite.rect.y + sprite.rect.height), 
-                                (sprite.rect.x + sprite.rect.width, sprite.rect.y + sprite.rect.height))
+                pygame.draw.line(self._display, (0, 0, 0), (sprite.rect.x, sprite.rect.y + sprite.rect.height),
+                                 (sprite.rect.x + sprite.rect.width, sprite.rect.y + sprite.rect.height))
             self._display.blit(
                 sprite.text, sprite.rect)
 
@@ -67,8 +68,8 @@ class MainpageView:
         for sudoku in self._sudokus:
             i += 1
             self._sudoku_links.add(self._sprites.SudokuLink(
-                sudoku.id, center = (self._display_width // 2, self._display_height / 4 + 20*i)))
-        self._logout_button = self._sprites.Button("Log out", x = 400, y = 20)
+                sudoku.id, center=(self._display_width // 2, self._display_height / 4 + 20*i)))
+        self._logout_button = self._sprites.Button("Log out", x=400, y=20)
 
     def select_sudoku(self, mouse):
         """Kertoo, onko jotakin sudokulinkkiä klikattu listassa

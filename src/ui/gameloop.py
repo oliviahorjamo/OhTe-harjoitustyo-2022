@@ -4,7 +4,7 @@ from ui.renderer import Renderer
 from ui.mainpage_view import MainpageView
 from ui.sudoku_view import SudokuView
 from ui.login_view import LoginView
-from services.sudoku_service import InvalidCredentialsError, UsernameExistsError, InvalidUsernameError, InvalidPasswordError,sudoku_service
+from services.sudoku_service import InvalidCredentialsError, UsernameExistsError, InvalidUsernameError, InvalidPasswordError, sudoku_service
 
 
 class GameLoop:
@@ -25,11 +25,11 @@ class GameLoop:
         self._display = display
         self._clock = Clock()
         self._renderer = Renderer()
-        self._mainpage_view = MainpageView(display = self._display)
-        self._login_view = LoginView(display = self._display)
+        self._mainpage_view = MainpageView(display=self._display)
+        self._login_view = LoginView(display=self._display)
         self.set_current_view(self._login_view)
 
-    def set_current_view(self, new_view, old_view = None):
+    def set_current_view(self, new_view, old_view=None):
         """Asettaa uuden näkymän rendererille ja asettaa tiedon siitä, minkä
         näkymän syötettä vastaanotetaan.
 
@@ -109,7 +109,8 @@ class GameLoop:
                     try:
                         self._sudoku_service.login(
                             username=self._login_view.username, password=self._login_view.password)
-                        self.set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
+                        self.set_current_view(
+                            new_view=self._mainpage_view, old_view=self._login_view)
                     except InvalidCredentialsError:
                         error_message = "Väärä käyttäjänimi tai salasana"
                         self._login_view.error_happened = True
@@ -119,7 +120,8 @@ class GameLoop:
                     try:
                         self._sudoku_service.create_user(
                             username=self._login_view.username, password=self._login_view.password)
-                        self.set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
+                        self.set_current_view(
+                            new_view=self._mainpage_view, old_view=self._login_view)
                     except UsernameExistsError:
                         message = "Tällä käyttäjänimellä on jo käyttäjä"
                         self._login_view.error_happened = True
@@ -175,8 +177,10 @@ class GameLoop:
             if selected_sudoku_id != None:
                 self._mainpage_view.underlined_sudoku = selected_sudoku_id
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                        self._sudoku_view = SudokuView(original_sudoku_id = selected_sudoku_id, display = self._display)
-                        self.set_current_view(old_view=self._mainpage_view, new_view=self._sudoku_view)
+                    self._sudoku_view = SudokuView(
+                        original_sudoku_id=selected_sudoku_id, display=self._display)
+                    self.set_current_view(
+                        old_view=self._mainpage_view, new_view=self._sudoku_view)
             else:
                 self._mainpage_view.underlined_sudoku = None
 
@@ -184,7 +188,8 @@ class GameLoop:
                 self._mainpage_view.mouse_over_logout_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self._sudoku_service.logout()
-                    self.set_current_view(old_view=self._mainpage_view, new_view=self._login_view)
+                    self.set_current_view(
+                        old_view=self._mainpage_view, new_view=self._login_view)
             else:
                 self._mainpage_view.mouse_over_logout_button = False
 
@@ -210,7 +215,7 @@ class GameLoop:
                 elif event.key == pygame.K_DOWN:
                     self._sudoku_view.move(dy=self._sudoku_view.cell_size)
                 elif event.key == pygame.K_DELETE:
-                        self._sudoku_view.delete_number()
+                    self._sudoku_view.delete_number()
                 else:
                     char = event.unicode
                     try:
@@ -223,14 +228,16 @@ class GameLoop:
                 self._sudoku_view.mouse_over_logout_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self._sudoku_service.logout()
-                    self.set_current_view(old_view=self._sudoku_view, new_view=self._login_view)
+                    self.set_current_view(
+                        old_view=self._sudoku_view, new_view=self._login_view)
             else:
                 self._sudoku_view.mouse_over_logout_button = False
 
             if self._sudoku_view.back_button_collide(pygame.mouse.get_pos()):
                 self._sudoku_view.mouse_over_return_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.set_current_view(old_view=self._sudoku_view, new_view=self._mainpage_view)
+                    self.set_current_view(
+                        old_view=self._sudoku_view, new_view=self._mainpage_view)
             else:
                 self._sudoku_view.mouse_over_return_button = False
 

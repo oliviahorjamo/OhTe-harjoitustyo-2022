@@ -31,6 +31,7 @@ class OriginalNumber(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+
 class SelectedSquare(pygame.sprite.Sprite):
     def __init__(self, cell_size, x=0, y=0):
         super().__init__()
@@ -38,24 +39,27 @@ class SelectedSquare(pygame.sprite.Sprite):
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.color = (255, 0, 0)
-        
+
+
 class HorizontalLine(pygame.sprite.Sprite):
     def __init__(self, width, cell_size, x=0, y=0):
         super().__init__()
         self.image = pygame.Surface((width * cell_size, 5))
         self.rect = self.image.get_rect()
-        self.color = (0,0,0)
+        self.color = (0, 0, 0)
         self.rect.x = x
         self.rect.y = y
+
 
 class VerticalLine(pygame.sprite.Sprite):
     def __init__(self, height, cell_size, x=0, y=0):
         super().__init__()
         self.image = pygame.Surface((5, height*cell_size))
         self.rect = self.image.get_rect()
-        self.color = (0,0,0)
+        self.color = (0, 0, 0)
         self.rect.x = x
         self.rect.y = y
+
 
 class WrongNumber(pygame.sprite.Sprite):
     pass
@@ -78,13 +82,14 @@ class AddedNumber(pygame.sprite.Sprite):
 
 
 class SudokuLink(pygame.sprite.Sprite):
-    def __init__(self, id, center=(0,0)):
+    def __init__(self, id, center=(0, 0)):
         super().__init__()
         self.font = pygame.font.SysFont("Arial", 15)
         self.text = self.font.render(f"sudoku numero: {id}", True, (0, 0, 0))
         self.rect = self.text.get_rect()
         self.rect.center = center
         self.id = id
+
 
 class EnterTextField(pygame.sprite.Sprite):
     def __init__(self, text=None, x=0, y=0):
@@ -107,10 +112,11 @@ class Button(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+
 class Error(pygame.sprite.Sprite):
-    def __init__(self, text = "", center = (0,0)):
+    def __init__(self, text="", center=(0, 0)):
         super().__init__()
         self.font = pygame.font.SysFont("Arial", 25)
-        self.text = self.font.render(text, 1, (121,205,205))
+        self.text = self.font.render(text, 1, (121, 205, 205))
         self.rect = self.text.get_rect()
         self.rect.center = center

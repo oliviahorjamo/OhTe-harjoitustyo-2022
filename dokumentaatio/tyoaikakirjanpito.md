@@ -15,4 +15,6 @@
 |3.5.   |  5   |Käyttäjän keskeneräisen ratkaisun tallentaminen ja hakeminen repositoriosta, koodin refaktorointia ja parantelua koodikatselmuksen palautteen mukaisesti. Docstringien kirjoittaminen dokumentaation parantaminen.|
 |10.5.  |  2   |Käyttäjä voi kirjautua ulos ja palata edelliselle sivulle.|
 |11.5.  |  4   |Dokumentaation parantamista ja virheviestin luominen |
-|yht    |  36  |
+|12.5.  |  2   |Dokumentaation parantamista|
+|13.5.  |  8   |Koodin refaktorointia, testauksen lisäämistä ja dokumentaation parantamista|
+|yht    |  46  |

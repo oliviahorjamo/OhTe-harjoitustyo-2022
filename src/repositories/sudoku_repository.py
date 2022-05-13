@@ -72,14 +72,14 @@ class OriginalSudokuRepository:
         """
         self._write([])
 
-    def _write(self, originals):
+    def _write(self, original_sudokus):
         """Kirjoittaa csv -tiedostoon kaikki parametrina annetut alkuperäiset sudokut.
 
         Args:
             Lista alkuperäisistä sudokuista OriginalSudoku -olioina.
         """
         with open(self.file_path, "w", encoding="utf-8") as file:
-            for original_sudoku in originals:
+            for original_sudoku in original_sudokus:
                 row = f"""{original_sudoku.id};{str(original_sudoku.grid[0])[1:-1]};{str(original_sudoku.grid[1])[1:-1]};{str(original_sudoku.grid[2])[1:-1]};{str(original_sudoku.grid[3])[1:-1]};{str(original_sudoku.grid[4])[1:-1]};{str(original_sudoku.grid[5])[1:-1]};{str(original_sudoku.grid[6])[1:-1]};{str(original_sudoku.grid[7])[1:-1]};{str(original_sudoku.grid[8])[1:-1]}"""
                 file.write(row+"\n")
 
@@ -153,6 +153,12 @@ class SudokuRepository:
         return False
 
     def read(self):
+        """Lukee koko csv -tiedoston sisällön.
+
+        Returns:
+            sudokus: Lista Sudoku -olioista, jotka on luotu csv -tiedostosta löytyvien
+            tietojen perusteella.
+        """
         sudokus = []
         with open(self.file_path, encoding="utf-8") as file:
             for row in file:
@@ -172,9 +178,12 @@ class SudokuRepository:
         return sudokus
 
     def delete_all(self):
+        """Tyhjentää koko csv -tiedoston.
+        """
         self._write([])
 
     def _write(self, sudokus):
+        """Kirjoittaa uudet sudokut csv -tiedstoon."""
         with open(self.file_path, "w", encoding="utf-8") as file:
             for sudoku in sudokus:
                 row = f"""{sudoku.id};{str(sudoku.grid[0])[1:-1]};{str(sudoku.grid[1])[1:-1]};{str(sudoku.grid[2])[1:-1]};{str(sudoku.grid[3])[1:-1]};{str(sudoku.grid[4])[1:-1]};{str(sudoku.grid[5])[1:-1]};{str(sudoku.grid[6])[1:-1]};{str(sudoku.grid[7])[1:-1]};{str(sudoku.grid[8])[1:-1]}"""
@@ -211,4 +220,4 @@ class SudokuRepository:
 
 
 sudoku_repository = SudokuRepository(SUDOKUS_FILE_PATH)
-original_sudokus_repository = OriginalSudokuRepository(ORIGINALS_FILE_PATH)
+original_sudoku_repository = OriginalSudokuRepository(ORIGINALS_FILE_PATH)

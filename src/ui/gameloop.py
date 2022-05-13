@@ -18,12 +18,12 @@ class GameLoop:
             display: Käyttöliittymän aloituksessa luotu näyttö, joka injektoidaan
             parametrina käyttöliittymän eri näkymille.
         """
-        self.clock = Clock()
         self._sudoku_service = sudoku_service
         self._show_login_view = False
         self._show_sudoku_view = False
         self._show_mainpage_view = False
         self._display = display
+        self._clock = Clock()
         self._renderer = Renderer()
         self._mainpage_view = MainpageView(display = self._display)
         self._login_view = LoginView(display = self._display)
@@ -68,7 +68,7 @@ class GameLoop:
             if self._handle_events() == False:
                 break
             self._render()
-            self.clock.tick(60)
+            self._clock.tick(60)
 
     def _handle_events(self):
         """Kutsuu nykyisen näkymän syötteen käsittelystä vastaavaa funktiota.
@@ -78,13 +78,13 @@ class GameLoop:
             sulkevaa painiketta.
         """
         if self._show_login_view:
-            return self._handle_events_login()
+            return self._handle_events_login_view()
         if self._show_mainpage_view:
-            return self._handle_events_mainpage()
+            return self._handle_events_mainpage_view()
         if self._show_sudoku_view:
-            return self._handle_events_sudoku()
+            return self._handle_events_sudoku_view()
 
-    def _handle_events_login(self):
+    def _handle_events_login_view(self):
         """Käsittelee käyttäjän syötettä, kun ollaan kirjautumissivulla.
 
         Returns:
@@ -167,7 +167,7 @@ class GameLoop:
             if event.type == pygame.QUIT:
                 return False
 
-    def _handle_events_mainpage(self):
+    def _handle_events_mainpage_view(self):
         """Käsittelee käyttäjän syötettä, kun ollaan etusivulla.
 
         Returns:
@@ -182,72 +182,65 @@ class GameLoop:
 
             if selected_sudoku_id != None:
                 self._mainpage_view.underlined_sudoku = selected_sudoku_id
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                        self._show_sudoku_view = True
-                        self._show_mainpage_view = False
                         self._sudoku_view = SudokuView(original_sudoku_id = selected_sudoku_id, display = self._display)
-                        self._renderer.current_view = self._sudoku_view
-
+                        self.set_current_view(old_view=self._mainpage_view, new_view=self._sudoku_view)
             else:
-                self._mainpage_view.underline_sudoku = None
+                self._mainpage_view.underlined_sudoku = None
 
             if self._mainpage_view.logout_button_collide(pygame.mouse.get_pos()):
-                self._mainpage_view.mouse_over_logout = True
+                self._mainpage_view.mouse_over_logout_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self._sudoku_service.logout()
-                    self._show_mainpage_view = False
-                    self._show_login_view = True
-                    self._renderer.current_view = self._login_view
+                    self.set_current_view(old_view=self._mainpage_view, new_view=self._login_view)
             else:
-                self._mainpage_view.mouse_over_logout = False
+                self._mainpage_view.mouse_over_logout_button = False
 
             if event.type == pygame.QUIT:
                 return False
 
-    def _handle_events_sudoku(self):
+    def _handle_events_sudoku_view(self):
+        """Käsittelee käyttäjän syötettä, kun ollaan pelinäkymässä
+
+        Returns:
+            Ei mitään tai False, jos käyttäjä on painanut pelin sulkevaa painiketta.
+        """
         for event in pygame.event.get():
 
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_LEFT:
-                    self._sudoku_view.move(dx=- self._sudoku_view.cell_size)
-                if event.key == pygame.K_RIGHT:
+                    self._sudoku_view.move(dx=-self._sudoku_view.cell_size)
+                elif event.key == pygame.K_RIGHT:
                     self._sudoku_view.move(dx=self._sudoku_view.cell_size)
-                if event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP:
                     self._sudoku_view.move(dy=-self._sudoku_view.cell_size)
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     self._sudoku_view.move(dy=self._sudoku_view.cell_size)
-
-                char = event.unicode
-                try:
-                    if 0 < int(char) < 10:
-                        self._sudoku_view.add_number((int(char)))
-                except ValueError:
-                    pass
-
-                if event.key == pygame.K_DELETE:
-                    self._sudoku_view.delete_number()
+                elif event.key == pygame.K_DELETE:
+                        self._sudoku_view.delete_number()
+                else:
+                    char = event.unicode
+                    try:
+                        if 0 < int(char) < 10:
+                            self._sudoku_view.add_number((int(char)))
+                    except ValueError:
+                        pass
 
             if self._sudoku_view.logout_button_collide(pygame.mouse.get_pos()):
-                self._sudoku_view.mouse_over_logout = True
+                self._sudoku_view.mouse_over_logout_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self._sudoku_service.logout()
-                    self._show_sudoku_view = False
-                    self._show_login_view = True
-                    self._renderer.current_view = self._login_view
+                    self.set_current_view(old_view=self._sudoku_view, new_view=self._login_view)
             else:
-                self._sudoku_view.mouse_over_logout = False
+                self._sudoku_view.mouse_over_logout_button = False
 
             if self._sudoku_view.back_button_collide(pygame.mouse.get_pos()):
-                self._sudoku_view.mouse_over_backbutton = True
+                self._sudoku_view.mouse_over_return_button = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self._show_sudoku_view = False
-                    self._show_mainpage_view = True
-                    self._renderer.current_view = self._mainpage_view
-                    self._sudoku_view.check_sudoku()
+                    self.set_current_view(old_view=self._sudoku_view, new_view=self._mainpage_view)
             else:
-                self._sudoku_view.mouse_over_backbutton = False
+                self._sudoku_view.mouse_over_return_button = False
 
             if event.type == pygame.QUIT:
                 return False

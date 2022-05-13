@@ -1,9 +1,5 @@
-# tämä moduuli vastaa sovelluslogiikasta
-# tähän alkuun repositorioiden importtaaminen myöhemmin
-
-from repositories.sudoku_repository import original_sudokus_repository, sudoku_repository
+from repositories.sudoku_repository import original_sudoku_repository, sudoku_repository
 from repositories.user_repository import user_repository
-#from entities.sudoku import OriginalSudoku, Sudoku
 from entities.user import User
 
 
@@ -28,8 +24,8 @@ class SudokuService:
         """Luokan konstruktori, joka luo uuden sovelluslogiikasta vastaavan olion."""
         self._user = None
         self._user_repository = user_repository
-        self.original_sudokus_repository = original_sudokus_repository
-        self.sudoku_repository = sudoku_repository
+        self._original_sudoku_repository = original_sudoku_repository
+        self._sudoku_repository = sudoku_repository
 
     def login(self, username, password):
         """Kirjaa käyttäjän sisään.
@@ -83,7 +79,7 @@ class SudokuService:
             self._user = user
         return user
 
-    def find_original_numbers(self, original_numbers_id):
+    def find_original_numbers(self, original_sudoku_id):
         """Etsii kyseisellä id -numerolla olevan sudokun alkuperäiset numerot.
 
         Args:
@@ -93,9 +89,9 @@ class SudokuService:
             Kyseisellä id -numerolla ja sillä löytyvillä alkuperäisillä numeroilla
             luotu OriginalSudoku -luokan olio.
         """
-        return self.original_sudokus_repository.find_by_id(original_numbers_id)
+        return self._original_sudoku_repository.find_by_id(original_sudoku_id)
 
-    def find_added_numbers(self, original_numbers_id):
+    def find_added_numbers(self, original_sudoku_id):
         """Etsii käyttäjän id:n ja alkuperäisen sudokun id:n avulla käyttäjän lisäämät numerot
 
         Args:
@@ -104,15 +100,18 @@ class SudokuService:
         Returns:
             Kyseisillä id -numeroilla löytynyt käyttäjän aiemmin tallentama sudokun ratkaisu
             tai tyhjä sudoku, jos käyttäjä ei ole lisännyt vielä yhtäkään numeroa."""
-        return self.sudoku_repository.find_by_id_and_user(original_numbers_id, self._user.username)
+        sudoku = self._sudoku_repository.find_by_id_and_user(original_sudoku_id, self._user.username)
+        if sudoku.user == None:
+            sudoku.user = self._user.username
+        return sudoku
 
-    def add_number(self, originals, sudoku, row, column, number):
+    def add_number(self, original_numbers, sudoku, row, column, number):
         """Lisää käyttäjän käyttöliittymässä antaman numeron Sudoku -olion grid -attributtiin.
         Poistaa käyttäjän aiemmin tähän sudokuun luoman ratkaisun csv -tiedostosta ja kirjoittaa
         tilalle nykyisen ratkaisun.
 
         Args:
-            originals: kyseisen sudokun alkuperäiset numerot listana
+            original_numbers: kyseisen sudokun alkuperäiset numerot listana
             sudoku: nykyinen muokattava sudoku Sudoku -oliona
             row: rivi, johon uusi numero tulisi lisätä
             column: sarake, johon uusi numero tulisi lisätä
@@ -121,20 +120,20 @@ class SudokuService:
         Returns:
             Totuusarvo, joka kertoo onnistuiko numeron lisääminen.
         """
-        if self.test_square_empty(originals, sudoku, row, column):
+        if self.test_square_empty(original_numbers, sudoku, row, column):
             sudoku.grid[row][column] = number
-            self.sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
+            self._sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
                                                       user_name=self._user.username)
-            self.sudoku_repository.write_new_numbers(sudoku)
+            self._sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
 
-    def delete_number(self, originals, sudoku, row, column):
+    def delete_number(self, original_numbers, sudoku, row, column):
         """Poistaa käyttäjän lisäämän numeron. Poistaa käyttäjän aiemmin tähän sudokuun
         luoman ratkaisun csv-tiedostosta ja kirjoittaa tilalle nykyisen ratkaisun.
 
         Args:
-            originals: kyseisen sudokun alkuperäiset numerot listana
+            original_numbers: kyseisen sudokun alkuperäiset numerot listana
             sudoku: nykyinen muokattava sudoku Sudoku -oliona
             row: rivi, josta käyttäjä haluaa poistaa numeron
             column: sarake, josta käyttäjä haluaa poistaa numeron
@@ -142,15 +141,15 @@ class SudokuService:
         Returns:
             Totuusarvo, joka kertoo onnistuiko numeron poistaminen.
         """
-        if self.test_can_delete(originals, row, column):
+        if self.test_can_delete(original_numbers, row, column):
             sudoku.grid[row][column] = 0
-            self.sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
+            self._sudoku_repository.delete_old_numbers(original_sudoku_id=sudoku.original_sudoku_id,
                                                       user_name=self._user.username)
-            self.sudoku_repository.write_new_numbers(sudoku)
+            self._sudoku_repository.write_new_numbers(sudoku)
             return True
         return False
 
-    def test_square_empty(self, originals, sudoku, row, column):
+    def test_square_empty(self, original_numbers, sudoku, row, column):
         """Tarkistaa, onko ruutu tyhjä eli ei sisällä käyttäjän lisäämää numeroa tai alkuperäistä
         numeroa.
 
@@ -163,7 +162,7 @@ class SudokuService:
         Returns:
             Totuusarvo, joka kertoo, onko kyseinen ruutu tyhjä.
         """
-        if sudoku.grid[row][column] == 0 and originals[row][column] == 0:
+        if original_numbers[row][column] == 0:
             return True
         return False
 
@@ -188,34 +187,29 @@ class SudokuService:
         Returns:
             Lista, jossa kaikki alkuperäiset sudokut OriginalSudoku -olioina.
         """
-        return self.original_sudokus_repository.find_all()
-
-    def check_sudoku(self, originals, sudoku):
-        virheviesti = ["virhe", ("rivi", "sarake")]
-        if self.check_if_completed(originals, sudoku):
-            for row in range(9):
-                for column in range(9):
-                    if sudoku[row][column] != 0:
-                        self.check_row(column, row, originals, sudoku)
-                        self.check_column(column, row, originals, sudoku)
-                        self.check_small_grid(self, column, row, originals, sudoku)
-        else:
-            virheviesti[0] = "numeroita puuttuu"
-        return virheviesti
-
-    def check_if_completed(self, originals, sudoku):
-        numbers_missing = 9*9
-        for row in range(9):
-            for column in range(9):
-                if originals[row][column] != 0 or sudoku[row][column] != 0:
-                    numbers_missing -= 1
-        return numbers_missing == 0
+        return self._original_sudoku_repository.find_all()
 
     def check_username_validity(self, username):
+        """Tarkistaa, onko käyttäjänimi oikean pituinen.
+
+        Args:
+            username: Käyttäjän käyttöliittymässä antama käyttäjänimi merkkijonona.
+
+        Returns:
+            False, jos käyttäjänimi ei ole oikean pituinen.
+        """
         if not (20 > len(username) >= 1):
             return False
 
     def check_password_validity(self, password):
+        """Tarkistaa, onko salasana oikean pituinen.
+
+        Args:
+            password: Käyttäjän käyttöliittymässä antama salasana merkkijonona.
+
+        Returns:
+            False, jos salasana ei ole oikean pituinen.
+        """
         if not (20 > len(password) >= 1):
             return False
 

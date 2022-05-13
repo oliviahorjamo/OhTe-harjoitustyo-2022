@@ -1,28 +1,9 @@
 import pygame
-from ui.view_login import LoginView
-from ui.view_mainpage import Mainpage
-from ui.view_sudoku import ViewSudoku
-from ui.error_page import ErrorPage
-from ui import ui
-
 
 class Renderer:
-    def __init__(self, display, current_view=None):
-        self._display = display
+    def __init__(self, current_view=None):
         self.current_view = current_view
-        pygame.display.set_caption("Sudoku game")
 
     def render(self):
-        self._display.fill((255, 255, 255))
-        if isinstance(self.current_view, LoginView):
-            self.current_view.draw_login_view()
-        elif isinstance(self.current_view, Mainpage):
-            self.current_view.draw_mainpage(self._display)
-        elif isinstance(self.current_view, ViewSudoku):
-            self.current_view.all_sprites.draw(self._display)
-            self.current_view.horizontal_lines.draw(self._display)
-            self.current_view.draw_sudoku(self._display)
-        #elif isinstance(self.current_view, ErrorPage):
-         #   print("virhw!")
-
+        self.current_view.draw()
         pygame.display.update()

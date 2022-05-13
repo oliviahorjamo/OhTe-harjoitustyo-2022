@@ -14,6 +14,12 @@ class InvalidCredentialsError(Exception):
 class UsernameExistsError(Exception):
     pass
 
+class InvalidUsernameError(Exception):
+    pass
+
+class InvalidPasswordError(Exception):
+    pass
+
 
 class SudokuService:
     """Sovelluslogiikasta vastaava luokka."""
@@ -37,7 +43,10 @@ class SudokuService:
         Returns:
             user: Kirjautuneen käyttäjän tiedoilla luotu User-olio
         """
-
+        if self.check_username_validity(username) == False:
+            raise InvalidUsernameError
+        if self.check_password_validity(password) == False:
+            raise InvalidPasswordError
         user = self._user_repository.find_by_username(username)
         if not user or user.password != password:
             raise InvalidCredentialsError('Invalid username or password')
@@ -62,6 +71,10 @@ class SudokuService:
         Returns:
             user: Käyttäjän tiedoilla luotu User -olio.
         """
+        if self.check_username_validity(username) == False:
+            raise InvalidUsernameError
+        if self.check_password_validity(password) == False:
+            raise InvalidPasswordError
         existing_user = self._user_repository.find_by_username(username)
         if existing_user:
             raise UsernameExistsError(f'Username {username} already exists')
@@ -177,5 +190,33 @@ class SudokuService:
         """
         return self.original_sudokus_repository.find_all()
 
+    def check_sudoku(self, originals, sudoku):
+        virheviesti = ["virhe", ("rivi", "sarake")]
+        if self.check_if_completed(originals, sudoku):
+            for row in range(9):
+                for column in range(9):
+                    if sudoku[row][column] != 0:
+                        self.check_row(column, row, originals, sudoku)
+                        self.check_column(column, row, originals, sudoku)
+                        self.check_small_grid(self, column, row, originals, sudoku)
+        else:
+            virheviesti[0] = "numeroita puuttuu"
+        return virheviesti
+
+    def check_if_completed(self, originals, sudoku):
+        numbers_missing = 9*9
+        for row in range(9):
+            for column in range(9):
+                if originals[row][column] != 0 or sudoku[row][column] != 0:
+                    numbers_missing -= 1
+        return numbers_missing == 0
+
+    def check_username_validity(self, username):
+        if not (20 > len(username) >= 1):
+            return False
+
+    def check_password_validity(self, password):
+        if not (20 > len(password) >= 1):
+            return False
 
 sudoku_service = SudokuService()

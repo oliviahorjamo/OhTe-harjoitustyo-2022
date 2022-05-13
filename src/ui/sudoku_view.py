@@ -4,11 +4,11 @@ from services.sudoku_service import sudoku_service
 import ui.sprites
 
 
-class ViewSudoku:
+class SudokuView:
     """Sudokun näyttämisestä vastaava näkymä
     """
 
-    def __init__(self, original_sudoku_id):
+    def __init__(self, original_sudoku_id, display):
         """Luokan konstruktori, joka luo uuden Sudoku -olion.
 
         Args:
@@ -17,7 +17,7 @@ class ViewSudoku:
             numerot ja käyttäjän mahdollisesti aiemmin luoma ratkaisu.
         """
         pygame.font.init()
-
+        self._display = display
         self.original_sudoku = sudoku_service.find_original_numbers(
             original_sudoku_id)
         self.user_sudoku = sudoku_service.find_added_numbers(
@@ -35,7 +35,7 @@ class ViewSudoku:
         self.empty_squares = pygame.sprite.Group()
         self.original_numbers = pygame.sprite.Group()
         self.added_numbers = pygame.sprite.Group()
-        self.horizontal_lines = pygame.sprite.Group()
+        self.lines = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.selected_square = self.sprites.SelectedSquare(self.cell_size)
         self.logout_button = self.sprites.Button("Log out", x=400, y = 20)
@@ -43,73 +43,70 @@ class ViewSudoku:
 
         self._initialize_sprites()
 
-    def draw_sudoku(self, display):
+    def draw(self):
         """Piirtää ne osat nykyisestä sudokusta näytölle, jotka vaativat tekstin tmv.
         piirtämistä näytölle eli joiden piirtäminen ei onnistu all_sprites.draw(display) -käskyllä.
 
         Args:
             display: Näyttö, jolle piirretään
         """
-        self.draw_added_numbers(display)
-        self.draw_original_numbers(display)
+        self._display.fill((255, 255, 255))
+        self.all_sprites.draw(self._display)
+        self.lines.draw(self._display)
+        self.draw_added_numbers()
+        self.draw_original_numbers()
         self.draw_selected_square()
-        self.draw_buttons(display)
+        self.draw_buttons()
 
-    def draw_buttons(self, display):
-        self.draw_logout(display)
-        self.draw_back_button(display)
+    def draw_buttons(self):
+        self.draw_logout()
+        self.draw_back_button()
 
-    def draw_logout(self, display):
+    def draw_logout(self):
         if self.mouse_over_logout:
-            pygame.draw.rect(display, (206, 243, 245), self.logout_button)
-        pygame.draw.rect(display, (0,0,0), self.logout_button, 2)
-        display.blit(self.logout_button.text,
+            pygame.draw.rect(self._display, (206, 243, 245), self.logout_button)
+        pygame.draw.rect(self._display, (0,0,0), self.logout_button, 2)
+        self._display.blit(self.logout_button.text,
                           (self.logout_button.rect.x + 10, self.logout_button.rect.y))
 
-    def draw_back_button(self, display):
+    def draw_back_button(self):
         if self.mouse_over_backbutton:
-            pygame.draw.rect(display, (206, 243, 245), self.back_button)
-        pygame.draw.rect(display, (0,0,0), self.back_button, 2)
-        display.blit(self.back_button.text,
+            pygame.draw.rect(self._display, (206, 243, 245), self.back_button)
+        pygame.draw.rect(self._display, (0,0,0), self.back_button, 2)
+        self._display.blit(self.back_button.text,
                           (self.back_button.rect.x + 10, self.back_button.rect.y))
 
-    def draw_original_numbers(self, display):
+    def draw_original_numbers(self):
         """Piirtää näytölle sudokuun liitetyt alkuperäiset numerot.
 
         Args:
             display: Näyttö, jolle piirretään.
         """
         for sprite in self.original_numbers:
-            display.blit(
+            self._display.blit(
                 sprite.text, (sprite.rect.x + self.cell_size / 4, sprite.rect.y))
 
-    def draw_added_numbers(self, display):
+    def draw_added_numbers(self):
         """Piirtää näytölle käyttäjän lisäämät numerot.
 
         Args:
             display: Näyttö, jolle piirretään.
         """
         for sprite in self.added_numbers:
-            display.blit(sprite.text, (sprite.rect.x +
+            self._display.blit(sprite.text, (sprite.rect.x +
                          self.cell_size / 4, sprite.rect.y))
 
-    def draw_lines(self, display):
-        """Piirtää näytölle sudokun 3x3 ruudukot rajaavat viivat.
-
-        Args:
-            display: Näyttö, jolle piirretään.
-        """
-        for i in range(len(self.grid) + 1):
-            if i % 3 == 0:
-                pygame.draw.line(display, (0, 0, 0), (0, i*self.cell_size),
-                                 (len(self.grid) * self.cell_size, i * self.cell_size), 6)
-                pygame.draw.line(display, (0, 0, 0), (i * self.cell_size, 0),
-                                 (i * self.cell_size, len(self.grid) * self.cell_size), 6)
 
     def draw_selected_square(self):
         """Piirtää näytölle neliön, joka näyttää nykyisen valitun ruudun."""
         pygame.draw.rect(self.selected_square.image,
-                         self.selected_square.color, self.selected_square.rect, 7)
+                         self.selected_square.color, self.selected_square.rect, 3)
+
+    def add_selected_square_to_top(self):
+        selected_square_old = self.selected_square
+        self.selected_square.kill()
+        self.selected_square = selected_square_old
+        self.all_sprites.add(selected_square_old)
 
     def _initialize_sprites(self):
         """Alustaa Sprite -oliot."""
@@ -120,10 +117,10 @@ class ViewSudoku:
                 normalized_x = x * self.cell_size
                 normalized_y = y * self.cell_size
                 if y % 3 == 0:
-                    self.horizontal_lines.add(self.sprites.HorizontalLine(
+                    self.lines.add(self.sprites.HorizontalLine(
                     width=width, cell_size=self.cell_size, x = 0, y = normalized_y))
                 if x % 3 == 0:
-                    self.horizontal_lines.add(self.sprites.VerticalLine(
+                    self.lines.add(self.sprites.VerticalLine(
                     height=height, cell_size=self.cell_size, x = normalized_x, y = 0))
                 if y == height or x == height:
                     continue
@@ -131,7 +128,7 @@ class ViewSudoku:
                 added = self.grid[y][x]
                 if added == 0 and original == 0:
                     self.empty_squares.add(
-                        self.sprites.EmptySquare(normalized_x, normalized_y))
+                        self.sprites.EmptySquare(normalized_x + 1, normalized_y + 1))
                 elif original != 0:
                     self.original_numbers.add(self.sprites.OriginalNumber(
                         str(original), normalized_x, normalized_y))
@@ -139,7 +136,7 @@ class ViewSudoku:
                     self.added_numbers.add(self.sprites.AddedNumber(
                         str(added), normalized_x, normalized_y))
         self.all_sprites.add(self.empty_squares,
-                             self.original_numbers, self.selected_square, self.horizontal_lines)
+                             self.original_numbers, self.selected_square, self.lines)
 
     def move(self, dx=0, dy=0):
         """Muuttaa nykyisen valitun ruudun Sprite -olion x- ja y -koordinaatteja. 
@@ -236,9 +233,7 @@ class ViewSudoku:
                 sprite.kill()
             self.added_numbers.add(self.sprites.AddedNumber(str(number), x, y))
             self.all_sprites.add(self.added_numbers)
-
-            sudoku_service.add_number(row=row, column=column, number=number,
-                                      originals=self.original_numbers, sudoku=self.user_sudoku)
+        self.add_selected_square_to_top()
 
     def delete_number(self):
         """Muokkaa Sprite -olioita niin, että nykyinen ruutu on EmptySquare -luokan olio eikä
@@ -252,6 +247,7 @@ class ViewSudoku:
             column, row = self.get_normalized_coordinates()
             self.empty_squares.add(self.sprites.EmptySquare(x, y))
             self.all_sprites.add(self.sprites.EmptySquare(x, y))
+        self.add_selected_square_to_top()
 
     def logout_button_collide(self, mouse):
         if self.logout_button.rect.collidepoint(mouse):
@@ -283,3 +279,6 @@ class ViewSudoku:
             for column_value in range(column_min, column_max + 1):
                 if self.grid[row_value][column_value] == number and not (row_value == row and column_value == column):
                     print("samassa ruudukossa virhe")
+
+    def check_sudoku(self):
+        print(sudoku_service.check_sudoku(self.originals, self.grid))

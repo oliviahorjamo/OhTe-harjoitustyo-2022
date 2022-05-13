@@ -33,11 +33,10 @@ class OriginalNumber(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-
 class SelectedSquare(pygame.sprite.Sprite):
     def __init__(self, cell_size, x=0, y=0):
         super().__init__()
-        self.image = pygame.Surface((cell_size, cell_size))
+        self.image = pygame.Surface((cell_size + 1, cell_size + 1))
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.color = (255, 0, 0)

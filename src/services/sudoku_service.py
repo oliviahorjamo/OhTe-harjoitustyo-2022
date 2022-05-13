@@ -199,7 +199,7 @@ class SudokuService:
         """
         if not 20 > len(username) >= 1:
             return False
-        return False
+        return True
 
     def check_password_validity(self, password):
         """Tarkistaa, onko salasana oikean pituinen.

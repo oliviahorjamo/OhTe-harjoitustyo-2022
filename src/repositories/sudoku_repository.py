@@ -50,6 +50,7 @@ class OriginalSudokuRepository:
         Returns:
             Listan alkuperäisistä sudokuista OriginalSudoku -olioina.
         """
+        self.ensure_file_exists()
         original_sudokus = []
         with open(self.file_path, encoding="utf-8") as file:
             for row in file:
@@ -159,6 +160,7 @@ class SudokuRepository:
             sudokus: Lista Sudoku -olioista, jotka on luotu csv -tiedostosta löytyvien
             tietojen perusteella.
         """
+        self.ensure_file_exists()
         sudokus = []
         with open(self.file_path, encoding="utf-8") as file:
             for row in file:

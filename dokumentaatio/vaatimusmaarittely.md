@@ -16,7 +16,6 @@ Sovellukseen täytyy ensin joko kirjautua sisään tai luoda uusi käyttäjä. T
 - Käyttäjä voi pelata järjestelmässä olevia sudokuita. Käyttäjä voi liikkua ruudukossa nuolinäppäimillä, lisätä numeron ruutuun painamalla haluamaansa numeropainiketta. Käyttäjä voi poistaa lisäämänsä numeron painamalle Delete -painiketta. **Tehty** 
 - Käyttäjän keskeneräisen sudoku tallennetaan automaattisesti. **Tehty**
 - Käyttäjän keskeneräinen ratkaisu haetaan automaattisesti käyttäjän avatessa sudokun. **Tehty**
-- Kun käyttäjä on pelannut koko sudokun, käyttöliittymä ilmoittaa onko ratkaisu oikea.
 - Käyttäjä voi kirjautua ulos. **Tehty**
 
 ## Jatkokehitysideoita

@@ -29,16 +29,16 @@ Kaikki luokat on sijoitettu omiin ui -kansiosta löytyviin moduuleihinsa.
 
 Kaikki edellä mainitut luokat käyttävät Sprite -olioita käyttöliittymän objektien esittämiseen. Näiden koodi löytyy [sprites](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/ui/sprites.py) -moduulista. 
 
-Kaikki käyttöliittymän koodi huolehtii vain käyttöliittymän näyttämisestä ja käyttäjän syötteen huomioimisesta. Käyttöliittymä kutsuu [SudokuService](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py) -luokan metodeja, joka huolehtii itse sovelluslogiikasta.
+Kaikki käyttöliittymän koodi huolehtii vain käyttöliittymän näyttämisestä ja käyttäjän syötteen huomioimisesta. Käyttöliittymä kutsuu sovelluslogiikasta vastaavan luokan [SudokuService](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py) metodeja.
 
 ## Sovelluslogiikka
 
 Sovelluslogiikasta vastaa SudokuService -luokan ainoa olio. Luokka huolehtii sovelluslogiikasta käyttäjän käyttöliittymässä antaman syötteen mukaisesti.
 
 Sovellus sisältää kolmenlaisia tietokohteita, jotka kaikki on toteutettu omina luokkinaan:
-- **User** -luokka kuvaa käyttäjään liittyviä tietoja.
-- **OriginalSudoku** -luokka kuvaa alkuperäisiä sovellukseen lisättyjä sudokuita, joita ei voi muokata.
-- **Sudoku** -luokka kuvaa käyttäjän henkilökohtaisia muokattuja sudokuita, jotka liittyvät aina tiettyyn OriginalSudoku -luokan olioon.
+- [**User**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/entities/user.py) -luokka kuvaa käyttäjään liittyviä tietoja.
+- [**OriginalSudoku**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/entities/sudoku.py#L1) -luokka kuvaa alkuperäisiä sovellukseen lisättyjä sudokuita, joita ei voi muokata.
+- [**Sudoku**](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/entities/sudoku.py#L21) -luokka kuvaa käyttäjän henkilökohtaisia muokattuja sudokuita, jotka liittyvät aina tiettyyn OriginalSudoku -luokan olioon.
 
 
 ```mermaid
@@ -59,7 +59,7 @@ Sovellus sisältää kolmenlaisia tietokohteita, jotka kaikki on toteutettu omin
       }
 ```
 
-SudokuService käsittelee sudokuihin ja käyttäjiin liittyviä tietoja repositories -pakkauksessa sijaitsevien luokkien OriginalSudokuRepository, SudokuRepository ja UserRepository avulla.
+SudokuService käsittelee sudokuihin ja käyttäjiin liittyviä tietoja repositories -pakkauksessa sijaitsevien luokkien [OriginalSudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/sudoku_repository.py#L8), [SudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/sudoku_repository.py#L102) ja [UserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/user_repository.py) avulla.
 
 ## Tietojen pysyväistallennus
 
@@ -67,7 +67,7 @@ Pakkausen repositories luokat UserRepository, OriginalSudokuRepository ja Sudoku
 
 ### Pysyväistallennukseen liittyvät tiedostot
 
-Sovelluksen juureen sijoitettu konfiguraatiotiedosto määrittelee tiedostojen nimet, joihin tieto tallennetaan. Käyttäjä voi halutessaan muuttaa näitä nimiä.
+Sovelluksen juureen sijoitettu [.env](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/.env) -konfiguraatiotiedosto määrittelee tiedostojen nimet, joihin tieto tallennetaan. Käyttäjä voi halutessaan muuttaa näitä nimiä.
 
 Käyttäjät tallennetaan SQLite tietokannan tauluun users. Tietokanta alustetaan initialize_database.py moduulissa.
 
@@ -160,7 +160,7 @@ sequenceDiagram
   SudokuService-->>GameLoop: user
   GameLoop->>GameLoop: set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
 ```
-GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut uuden käyttäjän luomis -painiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [create_user](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L28) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa [UserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/user_repository.py) -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
+GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut uuden käyttäjän luomis -painiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [create_user](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L53) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa [UserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/repositories/user_repository.py) -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
 
 ### Sisään kirjautuminen
 
@@ -180,7 +180,7 @@ sequenceDiagram
   SudokuService-->>GameLoop: user
   GameLoop->>GameLoop: set_current_view(new_view=self._mainpage_view, old_view=self._login_view)
 ```
-GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut sisäänkirjautumispainiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [login](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L28) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa UserRepository -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
+GameLoop -luokka saa LoginView -luokalta tiedon, että käyttäjä on painanut sisäänkirjautumispainiketta, minkä jälkeen GameLoop -luokka kutsuu `SudokuService` luokan metodia [login](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/services/sudoku_service.py#L32) ja antaa metodille parametreiksi käyttäjän käyttöliittymässä antaman käyttäjänimen ja salasanan. Tämän jälkeen SudokuService tarkistaa UserRepository -luokalta, että kyseisellä nimellä ei ole vielä luotu käyttäjää. Tämän jälkeen SudokuService luo uuden User -olion, ja antaa UserRepository -luokalle käskyn tallentaa käyttäjä pysyväistallennukseen. Tämän jälkeen SudokuService palauttaa GameLoop luokalle luodun käyttäjän, minkä jälkeen GameLoop luokka vaihtaa käyttöliittymän näkymän etusivuun.
 
 ### Sudokun klikkaaminen listassa
 

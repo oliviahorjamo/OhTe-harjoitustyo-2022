@@ -13,7 +13,7 @@ Sovellukseen täytyy ensin joko kirjautua sisään tai luoda uusi käyttäjä. T
 - Käyttäjä voi luoda järjestelmään uniikin käyttäjätunnuksen, jonka on oltava 1-19 merkkiä pitkä. Myös käyttäjätunnukseen liitetyn salasanan on oltava 1-19 merkkiä pitkä.
 - Käyttäjä voi kirjautua sisään.
 - Käyttäjä voi pelata järjestelmässä olevia sudokuita. Käyttäjä voi liikkua ruudukossa nuolinäppäimillä, lisätä numeron ruutuun painamalla haluamaansa numeropainiketta. Käyttäjä voi poistaa lisäämänsä numeron painamalle Delete -painiketta.
-- Käyttäjän keskeneräisen sudoku tallennetaan automaattisesti.
+- Käyttäjän keskeneräinen ratkaisu tallennetaan automaattisesti.
 - Käyttäjän keskeneräinen ratkaisu haetaan automaattisesti käyttäjän avatessa sudokun.
 - Käyttäjä voi palata pelinäkymästä takaisin etusivulle.
 - Käyttäjä voi kirjautua ulos.

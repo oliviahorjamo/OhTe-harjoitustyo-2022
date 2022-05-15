@@ -17,4 +17,4 @@
 |11.5.  |  4   |Dokumentaation parantamista ja virheviestin luominen |
 |12.5.  |  2   |Dokumentaation parantamista|
 |13.5.  |  8   |Koodin refaktorointia, testauksen lisäämistä ja dokumentaation parantamista|
-|yht    |  46  |
+|yht    | 51  |

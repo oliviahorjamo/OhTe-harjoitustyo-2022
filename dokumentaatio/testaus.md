@@ -18,7 +18,7 @@ DATABASE_FILENAME = test_database.sqlite
 
 ### Repositorio -luokat
 
-Repositorio -luokkia `UserRepository`, `OriginalSudokuRepository` ja `SudokuRepository` testataan samoilla testitiedoistoilla. Näitä testataan [TestUserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/user_repository_test.py), [TestOriginalSudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/sudoku_repository_test.py) ja [TestSudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/sudoku_repository_test.py) luokilla.
+Repositorio -luokkia `UserRepository`, `OriginalSudokuRepository` ja `SudokuRepository` testataan samoilla testitiedoistoilla kuin SudokuServicea. Näitä testataan [TestUserRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/user_repository_test.py), [TestOriginalSudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/sudoku_repository_test.py) ja [TestSudokuRepository](https://github.com/oliviahorjamo/OhTe-harjoitustyo-2022/blob/master/src/tests/sudoku_repository_test.py) luokilla.
 Suurin osa repositorioiden toiminnasta testataan TestSudokuService -luokassa integraatiotestein.
 
 ### Testauskattavuus

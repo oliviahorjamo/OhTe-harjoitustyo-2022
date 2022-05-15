@@ -21,3 +21,7 @@
 ## Viikko 6
 - Käyttäjän keskeneräinen ratkaisu tallennetaan automaattisesti jokaisen muutoksen jälkeen.
 - Käyttäjän keskeneräinen ratkaisu haetaan automaattisesti pelinäkymään käyttäjän alkaessa pelata uudestaan.
+
+## Viikko 7
+- Käyttäjä voi kirjautua ulos sovelluksesta.
+- Käyttäjä voi palata pelinäkymästä etusivulle painamalla Return -painiketta.
